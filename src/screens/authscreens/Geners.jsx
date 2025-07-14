@@ -1,100 +1,123 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 import {
   View,
   Text,
   FlatList,
   TouchableOpacity,
-  Image,
+  ImageBackground,
   StyleSheet,
   Dimensions,
 } from 'react-native';
-import { ChartBarSquareIcon } from 'react-native-heroicons/solid';
+import { CheckIcon, Square2StackIcon, ArrowLeftIcon } from 'react-native-heroicons/solid';
+import { geners } from '../../constants/geners';
+import { useNavigation, CommonActions } from '@react-navigation/native';
+import { useDispatch , useSelector} from 'react-redux';
+import { setFavoriteGenres } from '../../redux/Slices/userSlices';
+
 
 const { width } = Dimensions.get('window');
-const ITEM_WIDTH = 108;
-const ITEM_HEIGHT = 132;
-const ITEM_MARGIN = 13;
-
-const genres = [
-  { id: '1', name: 'Action', image: require('../../../assets/slidesss/Intro1.png') },
-  { id: '2', name: 'Romance', image: require('../../../assets/slidesss/Intro1.png') },
-  { id: '3', name: 'Comedy', image: require('../../../assets/slidesss/Intro1.png') },
-  { id: '4', name: 'War', image: require('../../../assets/slidesss/Intro1.png') },
-  { id: '5', name: 'Horror', image: require('../../../assets/slidesss/Intro1.png') },
-  { id: '6', name: 'Sci-Fi', image: require('../../../assets/slidesss/Intro1.png') },
-  { id: '7', name: 'Cartoon', image: require('../../../assets/slidesss/Intro1.png') },
-  { id: '8', name: 'Drama', image: require('../../../assets/slidesss/Intro1.png') },
-  { id: '9', name: 'Documentary', image: require('../../../assets/slidesss/Intro1.png') },
-    { id: '10', name: 'Cartoon', image: require('../../../assets/slidesss/Intro1.png') },
-  { id: '11', name: 'Drama', image: require('../../../assets/slidesss/Intro1.png') },
-  { id: '12', name: 'Documentary', image: require('../../../assets/slidesss/Intro1.png') },
-];
+const ITEM_WIDTH = width / 3.4;
+const ITEM_HEIGHT = 140;
+const ITEM_MARGIN = 10;
 
 const Geners = () => {
+  const navigation = useNavigation();
   const [selected, setSelected] = useState([]);
+  const dispatch=useDispatch();
+  const {  favoriteGenres}= useSelector((state)=>state.user);
 
-  const toggleSelect = (id) => {
-    if (selected.includes(id)) {
-      setSelected(selected.filter((item) => item !== id));
-    } else {
-      setSelected([...selected, id]);
-    }
-  };
+  useEffect(() => {
+  if (  favoriteGenres?.length) {
+    setSelected(  favoriteGenres);
+  }
+}, []);
 
-  const renderItem = ({ item, index }) => {
-    const isSelected = selected.includes(item.id);
+  const toggleSelect = (genre) => {
+  let updatedSelected = [];
 
-    // Handle custom margins for first and third column
-    const isFirstColumn = index % 3 === 0;
-    const isThirdColumn = index % 3 === 2;
+  const isAlreadySelected = selected.some((item) => item.title === genre.title);
 
-    return (
-      <TouchableOpacity
-        onPress={() => toggleSelect(item.id)}
-        style={[
-          styles.card,
-          {
-            marginLeft: isFirstColumn ? 18 : ITEM_MARGIN / 2,
-            marginRight: isThirdColumn ? 18 : ITEM_MARGIN / 2,
-          },
-        ]}
+  if (isAlreadySelected) {
+    updatedSelected = selected.filter((item) => item.title !== genre.title);
+  } else {
+    updatedSelected = [...selected, { title: genre.title, image: genre.image }];
+  }
+
+  setSelected(updatedSelected);
+  dispatch(setFavoriteGenres(updatedSelected));
+};
+
+
+const renderItem = ({ item }) => {
+  const isSelected = selected.some((g) => g.title === item.title);
+
+  return (
+    <TouchableOpacity onPress={() => toggleSelect(item)}>
+      <ImageBackground
+        source={{ uri: item.image }}
+        style={styles.card}
+        imageStyle={styles.imageStyle}
       >
-        <Image source={item.image} style={styles.image} />
-        <View style={styles.labelRow}>
-          <Text style={styles.label}>{item.name}</Text>
-          <ChartBarSquareIcon
-            size={22}
-            color={isSelected ? '#1E90FF' : '#999'}
-          />
+        <View style={styles.overlay}>
+          <Text style={styles.genreText}>{item.title}</Text>
+          {isSelected ? (
+            <CheckIcon size={20} color="#1E90FF" />
+          ) : (
+            <Square2StackIcon size={20} color="#ccc" />
+          )}
         </View>
-      </TouchableOpacity>
+      </ImageBackground>
+    </TouchableOpacity>
+  );
+};
+
+  const goToHomeTabs = () => {
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'MovieStack' }],
+      })
     );
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Genre</Text>
+      {/* Header with back button */}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <ArrowLeftIcon size={24} color="#fff" />
+        </TouchableOpacity>
+        <Text style={styles.title}>Genre</Text>
+        <View style={{ width: 24 }} /> {/* placeholder for spacing */}
+      </View>
+
       <Text style={styles.subTitle}>Choose at least 3 favorite genres</Text>
 
       <FlatList
-        data={genres}
+        data={geners}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.title}
         numColumns={3}
         contentContainerStyle={styles.grid}
+        showsVerticalScrollIndicator={false}
       />
 
-      {/* Show Confirm/Skip only if 3+ selected */}
-      {selected.length >= 3 && (
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.confirmBtn}>
-            <Text style={styles.confirmText}>Confirm</Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text style={styles.skipText}>Skip</Text>
-          </TouchableOpacity>
-        </View>
-      )}
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={[
+            styles.confirmBtn,
+            { opacity: selected.length >= 3 ? 1 : 0.5 },
+          ]}
+          disabled={selected.length < 3}
+          onPress={goToHomeTabs}
+        >
+          <Text style={styles.confirmText}>Confirm</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={goToHomeTabs}>
+          <Text style={styles.skipText}>Skip</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -105,8 +128,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#061124',
-    paddingTop: 60,
+    paddingTop: 50,
     paddingHorizontal: 15,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 20,
   },
   title: {
     color: '#fff',
@@ -117,6 +146,7 @@ const styles = StyleSheet.create({
   subTitle: {
     color: '#aaa',
     fontSize: 14,
+    fontWeight: 'bold', // 👈 make subtitle bold
     textAlign: 'center',
     marginBottom: 20,
   },
@@ -126,29 +156,21 @@ const styles = StyleSheet.create({
   card: {
     width: ITEM_WIDTH,
     height: ITEM_HEIGHT,
-    backgroundColor: '#0F1A2E',
-    borderRadius: 6,
+    margin: ITEM_MARGIN / 2,
+    justifyContent: 'flex-end',
     overflow: 'hidden',
-    alignItems: 'center',
-    marginVertical: 6,
   },
-  image: {
-    width: ITEM_WIDTH,
-    height: ITEM_WIDTH,
-    resizeMode: 'cover',
-  },
-  labelRow: {
+  overlay: {
+    backgroundColor: 'black',
+    padding: 8,
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
-    width: '100%',
-    paddingHorizontal: 8,
-    paddingBottom: 8,
+    alignItems: 'center',
   },
-  label: {
+  genreText: {
     color: '#fff',
+    fontWeight: 'bold',
     fontSize: 14,
-    fontWeight: '500',
   },
   buttonContainer: {
     alignItems: 'center',

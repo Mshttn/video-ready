@@ -9,11 +9,13 @@ import {
   FlatList,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { MagnifyingGlassIcon } from 'react-native-heroicons/solid';
-import { BellIcon } from 'react-native-heroicons/outline';
+import { MagnifyingGlassIcon, UserIcon } from 'react-native-heroicons/solid';
+import { BellIcon, UserCircleIcon } from 'react-native-heroicons/outline';
+import { useSelector } from 'react-redux';
 
 const MainScreen = () => {
   const navigation = useNavigation();
+  const {profileImage} =useSelector((state)=>state.user)
 
   return (
     <View style={styles.container}>
@@ -28,42 +30,44 @@ const MainScreen = () => {
             <BellIcon size={22} color="white" />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.openDrawer()}>
-            <Image source={require('../../../assets/logo.png')} style={styles.avatar} />
+            <Image source={{uri:profileImage}} size={24} color='white' style={styles.avatar} />
           </TouchableOpacity>
         </View>
       </View>
 
-      {/* Scrollable Content */}
+   
       <ScrollView>
-        {/* Banner Section */}
-        <View style={styles.banner}>
-          <Image
-            source={require('../../../assets/morbius.jpg')}
-            style={styles.bannerImage}
-          />
-          <Text style={styles.movieTitle}>Morbius</Text>
-          
-          {/* Buttons Row */}
-          <View style={styles.buttonRow}>
-            <TouchableOpacity>
-              <Text style={styles.moreDetails}>More details</Text>
-            </TouchableOpacity>
+      
+       <View style={styles.banner}>
+  <Image
+    source={require('../../../assets/morbius.jpg')}
+    style={styles.bannerImage}
+  />
 
-            <TouchableOpacity style={styles.watchButton}>
-              <Text style={styles.watchButtonText}>▶ Watch Now</Text>
-            </TouchableOpacity>
+  <View style={styles.bannerOverlay}>
+    <Text style={styles.movieTitle}>Morbius</Text>
 
-            <TouchableOpacity style={styles.playlistRow}>
-              <Image
-                source={require('../../../assets/Downloading/playlist_add.png')}
-                style={styles.playlistIcon}
-              />
-              <Text style={styles.addToPlaylist}>Add to playlist</Text>
-            </TouchableOpacity>
-          </View>
+    <View style={styles.buttonRow}>
+      <TouchableOpacity>
+        <Text style={styles.moreDetails}>More details</Text>
+      </TouchableOpacity>
 
-          <Text style={styles.genre}>Action | Thriller | Suspense</Text>
-        </View>
+      <TouchableOpacity style={styles.watchButton}>
+        <Text style={styles.watchButtonText}>▶ Watch Now</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.playlistRow}>
+        <Image
+          source={require('../../../assets/Downloading/playlist_add.png')}
+          style={styles.playlistIcon}
+        />
+        <Text style={styles.addToPlaylist}>Add to playlist</Text>
+      </TouchableOpacity>
+    </View>
+
+    <Text style={styles.genre}>Action | Thriller | Suspense</Text>
+  </View>
+</View>
 
         {/* Flash Channel Section */}
         <View style={styles.section}>
@@ -73,6 +77,7 @@ const MainScreen = () => {
               <Text style={styles.moreText}>More</Text>
             </TouchableOpacity>
           </View>
+          
           <FlatList
             data={[
                require('../../../assets/series/squiddd.png'),
@@ -86,12 +91,17 @@ const MainScreen = () => {
             showsHorizontalScrollIndicator={false}
             keyExtractor={(_, index) => index.toString()}
             renderItem={({ item }) => (
-              <Image source={item} style={styles.flashThumbnail} />
+             
+               <TouchableOpacity
+                onPress={() => navigation.navigate('MovieDetails', { image: item })}
+              >
+               <Image source={item} style={styles.flashThumbnail} />
+              </TouchableOpacity>
             )}
           />
         </View>
 
-        {/* Stay at Home Section */}
+    
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Stay at Home</Text>
@@ -158,73 +168,92 @@ const styles = StyleSheet.create({
   },
 
   // Banner
-  banner: {
-    width: 375,
-    alignSelf: 'center',
-    alignItems: 'center',
-    backgroundColor:"#001122"
-    
-  },
-  bannerImage: {
-    width: 375,
-    height: 220,
-   
-    resizeMode: 'cover',
-  },
-  movieTitle: {
-    fontSize: 24,
-    color: '#fff',
-    fontWeight: 'bold',
-    marginTop: 15,
-  },
+banner: {
+  width: 375,
+  height: 375,
+  alignSelf: 'center',
+  position: 'relative',
+  marginBottom: 10,
+},
 
-  buttonRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    marginVertical: 12,
-    paddingHorizontal: 10,
-  },
-  moreDetails: {
-    color: '#aaa',
-    fontSize: 14,
-    margin:4
-  },
-  watchButton: {
-    backgroundColor: '#1679F8',
-    width: 129,
-    height: 32,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 6, 
-    margin:8
-  },
-  watchButtonText: {
-    color: '#fff',
-    fontWeight: '600',
-    fontSize: 14,
-  },
-  playlistRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    margin:4
+bannerImage: {
+  width: '100%',
+  height: '100%',
+  resizeMode: 'cover',
+  borderRadius: 8,
+},
 
-  },
-  playlistIcon: {
-    width: 18,
-    height: 18,
-    tintColor: '#aaa',
-    marginRight: 4,
-  },
-  addToPlaylist: {
-    color: '#aaa',
-    fontSize: 14,
-  },
-  genre: {
-    color: '#888',
-    fontSize: 14,
-    marginTop: 5,
-  },
+bannerOverlay: {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  justifyContent: 'flex-end',
+  padding: 16,
+  backgroundColor: 'rgba(0, 0, 0, 0.35)', // semi-transparent dark overlay
+  borderRadius: 8,
+},
+
+movieTitle: {
+  fontSize: 26,
+  color: '#fff',
+  fontWeight: 'bold',
+  marginBottom: 10,
+  textAlign:'center'
+},
+
+buttonRow: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-around',
+  marginBottom: 10,
+},
+
+moreDetails: {
+  color: '#aaa',
+  fontSize: 14,
+  marginHorizontal: 5,
+},
+
+watchButton: {
+  backgroundColor: '#1679F8',
+  paddingHorizontal: 16,
+  height: 32,
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderRadius: 6,
+},
+
+watchButtonText: {
+  color: '#fff',
+  fontWeight: '600',
+  fontSize: 14,
+},
+
+playlistRow: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  marginHorizontal: 5,
+},
+
+playlistIcon: {
+  width: 18,
+  height: 18,
+  tintColor: '#aaa',
+  marginRight: 4,
+},
+
+addToPlaylist: {
+  color: '#aaa',
+  fontSize: 14,
+},
+
+genre: {
+  color: '#ddd',
+  fontSize: 14,
+  textAlign: 'center',
+},
 
   // Sections
   section: {

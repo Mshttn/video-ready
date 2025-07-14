@@ -8,16 +8,64 @@ import {
   StyleSheet,
   Image,
   Dimensions,
+  Alert,
 } from 'react-native';
+
+import { getAuth, signInWithPhoneNumber } from '@react-native-firebase/auth';
+import { firebase } from '@react-native-firebase/auth';
+import { useDispatch, useSelector } from 'react-redux';
 
 const { width } = Dimensions.get('window');
 
 const Signupin = () => {
-  const navigation=useNavigation();
+  const navigation = useNavigation();
   const [activeTab, setActiveTab] = useState('signIn');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+
+  const [emaill, setEmail] = useState('');
+  const [passwordd, setPassword] = useState('');
+
   const [phone, setPhone] = useState('');
+  const [code, setCode] = useState('');
+  const [confirmResult, setConfirmResult] = useState(null);
+ 
+const { email, password } = useSelector((state) => state.user);
+
+  const auth = getAuth();
+  firebase.auth().settings.appVerificationDisabledForTesting = true; // for emulator only
+
+  const sendOtp = async () => {
+    if (!phone) return Alert.alert('Validation', 'Please enter phone number');
+    try {
+      const result = await signInWithPhoneNumber(auth, phone);
+      setConfirmResult(result);
+    } catch (error) {
+      Alert.alert('Error', error.message);
+    }
+  };
+
+  const verifyCode = async () => {
+    if (!code) return Alert.alert('Validation', 'Enter the OTP code');
+    try {
+      await confirmResult.confirm(code);
+      Alert.alert('Verified!', 'Phone number verified');
+      navigation.replace('UserProfile');
+    } catch (error) {
+      Alert.alert('Invalid Code', error.message);
+    }
+  };
+  const handleSignIn = () => {
+  if (!emaill || !passwordd) {
+    Alert.alert('Error', 'Please enter both email and password');
+    return;
+  }
+
+  if (emaill === email && passwordd === password) {
+    Alert.alert('Success', 'Logged in successfully');
+    navigation.replace('EditProfile'); // Or wherever you want to go
+  } else {
+    Alert.alert('Error', 'Invalid email or password');
+  }
+};
 
   return (
     <View style={styles.container}>
@@ -27,7 +75,7 @@ const Signupin = () => {
         style={styles.logo}
       />
 
-      {/* Tab Bar */}
+      {/* Tabs */}
       <View style={styles.tabContainer}>
         <TouchableOpacity onPress={() => setActiveTab('signIn')}>
           <Text
@@ -54,14 +102,14 @@ const Signupin = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Conditional Form */}
+      {/* Sign In UI */}
       {activeTab === 'signIn' ? (
         <>
           <TextInput
             placeholder="Email / Mobile Number"
             placeholderTextColor="#777"
             style={styles.input}
-            value={email}
+            value={emaill}
             onChangeText={setEmail}
           />
 
@@ -70,13 +118,22 @@ const Signupin = () => {
             placeholderTextColor="#777"
             secureTextEntry
             style={styles.input}
-            value={password}
+            value={passwordd}
             onChangeText={setPassword}
           />
 
-          <TouchableOpacity style={styles.signInButton}>
-            <Text style={styles.signInText}>Sign In</Text>
-          </TouchableOpacity>
+          <TouchableOpacity
+  activeOpacity={0.8}
+  style={[
+    styles.signInButton,
+    !(emaill && passwordd) && styles.disabledButton,
+  ]}
+  disabled={!(emaill && passwordd)}
+  onPress={handleSignIn}
+>
+  <Text style={styles.signInText}>Sign In</Text>
+</TouchableOpacity>
+
 
           <TouchableOpacity>
             <Text style={styles.forgotText}>Forgot Password</Text>
@@ -84,21 +141,54 @@ const Signupin = () => {
         </>
       ) : (
         <>
-          <TextInput
-            placeholder="Phone Number"
-            placeholderTextColor="#777"
-            style={styles.input}
-            keyboardType="phone-pad"
-            value={phone}
-            onChangeText={setPhone}
-          />
+          {/* Sign Up UI with OTP */}
+          {!confirmResult ? (
+            <>
+              <TextInput
+                placeholder="Phone Number (e.g. +91xxxxxxxxxx)"
+                placeholderTextColor="#777"
+                style={styles.input}
+                keyboardType="phone-pad"
+                value={phone}
+                onChangeText={setPhone}
+              />
 
-          <TouchableOpacity style={styles.signInButton}>
-            <Text style={styles.signInText}>Continue</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={()=>navigation.navigate('UserProfile')} style={styles.signInButton}>
-            <Text style={styles.signInText}>nextpage</Text>
-          </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={sendOtp}
+                style={[
+                  styles.signInButton,
+                  !phone && styles.disabledButton,
+                ]}
+                disabled={!phone}
+              >
+                <Text style={styles.signInText}>Send OTP</Text>
+              </TouchableOpacity>
+            </>
+          ) : (
+            <>
+              <TextInput
+                placeholder="Enter OTP"
+                placeholderTextColor="#777"
+                style={styles.input}
+                keyboardType="number-pad"
+                value={code}
+                onChangeText={setCode}
+              />
+
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={verifyCode}
+                style={[
+                  styles.signInButton,
+                  !code && styles.disabledButton,
+                ]}
+                disabled={!code}
+              >
+                <Text style={styles.signInText}>Verify OTP</Text>
+              </TouchableOpacity>
+            </>
+          )}
         </>
       )}
     </View>
@@ -106,6 +196,7 @@ const Signupin = () => {
 };
 
 export default Signupin;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -160,8 +251,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 10,
   },
+  disabledButton: {
+    opacity: 0.5,
+  },
   signInText: {
-    color: '#888',
+    color: '#fff',
     fontWeight: 'bold',
     fontSize: 16,
   },

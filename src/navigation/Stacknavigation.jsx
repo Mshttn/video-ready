@@ -6,6 +6,8 @@ import Geners from '../screens/authscreens/Geners';
 import Crousl from '../screens/authscreens/Crousl';
 import Signupin from '../screens/authscreens/Signupin';
 import UserProfile from '../screens/authscreens/UserProfile';
+import EditProfile from '../screens/authscreens/EditProfile';
+import UserEdit from '../screens/authscreens/UserEdit';
 
 
 const Stack = createNativeStackNavigator();
@@ -18,8 +20,11 @@ const Stacknavigation = () => {
       
           <Stack.Screen  options={{headerShown:false}}   name="Crousl" component={Crousl} />
             <Stack.Screen options={{headerShown:false}}   name="Signupin" component={Signupin} />
-              <Stack.Screen  name="UserProfile" component={UserProfile} />
-                <Stack.Screen   name="Geners" component={Geners} />
+              <Stack.Screen  options={{headerShown:false}} name="UserProfile" component={UserProfile} />
+                <Stack.Screen  options={{headerShown:false}} name="EditProfile" component={EditProfile} />
+
+                  <Stack.Screen  options={{headerShown:false}}  name="UserEdit" component={UserEdit} />
+                 <Stack.Screen  options={{headerShown:false}}  name="Geners" component={Geners} />
 
     </Stack.Navigator>
   )
