@@ -60,7 +60,7 @@ const Signupin = () => {
 
     if (emaill === email && passwordd === password) {
       Alert.alert('Success', 'Logged in successfully');
-      navigation.replace('EditProfile');
+      navigation.navigate('EditProfile');
     } else {
       Alert.alert('Error', 'Invalid email or password');
     }

@@ -33,6 +33,9 @@ export const userSlices = createSlice({
 setFavoriteGenres: (state, action) => {
       state.favoriteGenres = action.payload;
     },
+   removeGenre:(state,action)=>{
+    state.favoriteGenres=state.favoriteGenres.filter((genre)=>genre.title!==action.payload)
+   },
 
     clearUser: (state) => {
       state.name = '';
@@ -42,5 +45,5 @@ setFavoriteGenres: (state, action) => {
   },
 });
 
-export const { setUserName, setUserCredentials, clearUser,setUserProfiles,setUserImage,setAgeGroup,setFavoriteGenres} = userSlices.actions;
+export const { setUserName, setUserCredentials, clearUser,setUserProfiles,setUserImage,setAgeGroup,setFavoriteGenres,removeGenre} = userSlices.actions;
 export default userSlices.reducer;

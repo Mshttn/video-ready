@@ -6,6 +6,7 @@ import Download from '../screens/Dashboard/Download';
 import VideoScreen from '../screens/Dashboard/VideoScreen';
 import DrawerNavigator from './DrawerNavigator';
 import MyProfile from '../screens/Dashboard/MyProfile';
+import EditGenres from '../screens/Dashboard/EditGenres';
 
 const Stack=createNativeStackNavigator();
 
@@ -18,6 +19,7 @@ const MovieStack = () => {
         <Stack.Screen name="Video" component={VideoScreen}/>
         <Stack.Screen name="Download" component={Download}/>
         <Stack.Screen name='Myprofile' component ={MyProfile}/>
+         <Stack.Screen name='EditGenres' component ={EditGenres}/>
     </Stack.Navigator>
     
   )

@@ -27,7 +27,7 @@ const ITEM_WIDTH = width / 3.4;
 const ITEM_HEIGHT = 140;
 const ITEM_MARGIN = 10;
 
-const Geners = () => {
+const EditGenres = () => {
   const navigation = useNavigation();
   const [selected, setSelected] = useState([]);
   const dispatch=useDispatch();
@@ -81,15 +81,7 @@ const renderItem = ({ item }) => {
   );
 };
 
-  const goToHomeTabs = () => {
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: 'MovieStack' }],
-      })
-    );
-  };
-
+  
   return (
     <View style={styles.container}>
       {/* Header with back button */}
@@ -119,20 +111,18 @@ const renderItem = ({ item }) => {
             { opacity: selected.length >= 3 ? 1 : 0.5 },
           ]}
           disabled={selected.length < 3}
-          onPress={goToHomeTabs}
+          onPress={()=>navigation.goBack()}
         >
           <Text style={styles.confirmText}>Confirm</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={goToHomeTabs}>
-          <Text style={styles.skipText}>Skip</Text>
-        </TouchableOpacity>
+       
       </View>
     </View>
   );
 };
 
-export default Geners;
+export default EditGenres;
 
 const styles = StyleSheet.create({
   container: {

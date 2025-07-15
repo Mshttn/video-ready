@@ -13,37 +13,17 @@ import { EllipsisVerticalIcon } from 'react-native-heroicons/outline';
 import { ArrowLeftIcon } from 'react-native-heroicons/solid';
 import { colors } from '../../constants/Colors';
 import { Fonts } from '../../constants/fonts';
+import { useDispatch, useSelector } from 'react-redux';
+import { removeDownload } from '../../redux/Slices/downloadSlice';
 
-const downloadedVideos = [
-  {
-    id: '1',
-    title: 'Departure',
-    genres: 'Action, Adventure, Fantasy',
-    thumbnail: require('../../../assets/series/squiddd.png'),
-  },
-  {
-    id: '2',
-    title: 'Dracula Untold',
-    genres: 'Action, Fantasy',
-    thumbnail: require('../../../assets/series/squiddd.png'),
-  },
-  {
-    id: '3',
-    title: 'Brave New World',
-    genres: 'Action, Fantasy',
-    thumbnail: require('../../../assets/series/panchayat.png'),
-  },
-  {
-    id: '4',
-    title: 'Mega Zoo',
-    genres: 'Action, Adventure, Fantasy',
-    thumbnail: require('../../../assets/series/money.png'),
-  },
-];
+
 
 const Download = ({ navigation }) => {
+
+  const downloadvideoss= useSelector((state)=>state.downloadvd.downloadvideos)
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [showSheet, setShowSheet] = useState(false);
+  const dispatch=useDispatch();
 
   const openOptions = (video) => {
     setSelectedVideo(video);
@@ -52,7 +32,12 @@ const Download = ({ navigation }) => {
 
   const handleDelete = () => {
     console.log('Deleting', selectedVideo.title);
-    setShowSheet(false);
+    if(selectedVideo){
+ dispatch(removeDownload(selectedVideo.id))
+  setShowSheet(false);
+    }
+   
+  
   };
 
   const handleRedownload = () => {
@@ -88,7 +73,7 @@ const Download = ({ navigation }) => {
       </View>
       
       <FlatList
-        data={downloadedVideos}
+        data={downloadvideoss}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         contentContainerStyle={{ paddingBottom: 40 }}

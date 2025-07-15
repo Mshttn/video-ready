@@ -7,16 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A599F0FE418436C8E662AAD /* Roboto-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D6C56282DA5B4B5A85602295 /* Roboto-SemiBold.ttf */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		6971A39797224BA88CBD6D49 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4C5F65BD49844892A5F6C8A5 /* Roboto-Medium.ttf */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		79D5E43D2E1FEAA30064ABB0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 79D5E43C2E1FEAA30064ABB0 /* GoogleService-Info.plist */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		8D4D74F8C70848C5B0A6F3E8 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B2662F91CDA14C1290CBF071 /* Roboto-Regular.ttf */; };
+		CA4EAE24118E4B1D9B11C6DC /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 871BD7B0D76C4C119B085E52 /* Roboto-Bold.ttf */; };
 		E959BA8C5F2851D2FCF343E8 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		FECD650720C4E70E5233C5B5 /* Pods_firebaseappauth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26CB41D8D2DB50408EB6564D /* Pods_firebaseappauth.framework */; };
-		CA4EAE24118E4B1D9B11C6DC /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 871BD7B0D76C4C119B085E52 /* Roboto-Bold.ttf */; };
-		6971A39797224BA88CBD6D49 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4C5F65BD49844892A5F6C8A5 /* Roboto-Medium.ttf */; };
-		8D4D74F8C70848C5B0A6F3E8 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B2662F91CDA14C1290CBF071 /* Roboto-Regular.ttf */; };
-		0A599F0FE418436C8E662AAD /* Roboto-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D6C56282DA5B4B5A85602295 /* Roboto-SemiBold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,16 +26,16 @@
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = firebaseappauth/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		26CB41D8D2DB50408EB6564D /* Pods_firebaseappauth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_firebaseappauth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B4392A12AC88292D35C810B /* Pods-firebaseappauth.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-firebaseappauth.debug.xcconfig"; path = "Target Support Files/Pods-firebaseappauth/Pods-firebaseappauth.debug.xcconfig"; sourceTree = "<group>"; };
+		4C5F65BD49844892A5F6C8A5 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Medium.ttf"; path = "../assets/fonts/Roboto-Medium.ttf"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-firebaseappauth.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-firebaseappauth.release.xcconfig"; path = "Target Support Files/Pods-firebaseappauth/Pods-firebaseappauth.release.xcconfig"; sourceTree = "<group>"; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = firebaseappauth/AppDelegate.swift; sourceTree = "<group>"; };
 		79D5E43B2E1FD1E40064ABB0 /* firebaseappauth.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = firebaseappauth.entitlements; path = firebaseappauth/firebaseappauth.entitlements; sourceTree = "<group>"; };
 		79D5E43C2E1FEAA30064ABB0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = firebaseappauth/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		871BD7B0D76C4C119B085E52 /* Roboto-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Bold.ttf"; path = "../assets/fonts/Roboto-Bold.ttf"; sourceTree = "<group>"; };
+		B2662F91CDA14C1290CBF071 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Regular.ttf"; path = "../assets/fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; };
+		D6C56282DA5B4B5A85602295 /* Roboto-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-SemiBold.ttf"; path = "../assets/fonts/Roboto-SemiBold.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		871BD7B0D76C4C119B085E52 /* Roboto-Bold.ttf */ = {isa = PBXFileReference; name = "Roboto-Bold.ttf"; path = "../assets/fonts/Roboto-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		4C5F65BD49844892A5F6C8A5 /* Roboto-Medium.ttf */ = {isa = PBXFileReference; name = "Roboto-Medium.ttf"; path = "../assets/fonts/Roboto-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		B2662F91CDA14C1290CBF071 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; name = "Roboto-Regular.ttf"; path = "../assets/fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		D6C56282DA5B4B5A85602295 /* Roboto-SemiBold.ttf */ = {isa = PBXFileReference; name = "Roboto-SemiBold.ttf"; path = "../assets/fonts/Roboto-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +61,18 @@
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
 			);
 			name = firebaseappauth;
+			sourceTree = "<group>";
+		};
+		22160448BFF34219A2565829 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				871BD7B0D76C4C119B085E52 /* Roboto-Bold.ttf */,
+				4C5F65BD49844892A5F6C8A5 /* Roboto-Medium.ttf */,
+				B2662F91CDA14C1290CBF071 /* Roboto-Regular.ttf */,
+				D6C56282DA5B4B5A85602295 /* Roboto-SemiBold.ttf */,
+			);
+			name = Resources;
+			path = "";
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -111,18 +123,6 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
-		};
-		22160448BFF34219A2565829 /* Resources */ = {
-			isa = "PBXGroup";
-			children = (
-				871BD7B0D76C4C119B085E52 /* Roboto-Bold.ttf */,
-				4C5F65BD49844892A5F6C8A5 /* Roboto-Medium.ttf */,
-				B2662F91CDA14C1290CBF071 /* Roboto-Regular.ttf */,
-				D6C56282DA5B4B5A85602295 /* Roboto-SemiBold.ttf */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-			path = "";
 		};
 /* End PBXGroup section */
 

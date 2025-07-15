@@ -15,6 +15,43 @@ import { useSelector } from 'react-redux';
 import { colors } from '../../constants/Colors';
 import { Fonts } from '../../constants/fonts';
 
+
+const flashChannelData = [
+  {
+    id: '1',
+    name: 'Squid Game',
+    image: require('../../../assets/series/squiddd.png'),
+  },
+  {
+    id: '2',
+    name: 'Kabir Singh',
+    image: require('../../../assets/series/kabir.png'),
+  },
+  {
+    id: '3',
+    name: 'Money Heist',
+    image: require('../../../assets/series/money.png'),
+  },
+  {
+    id: '4',
+    name: 'Panchayat',
+    image: require('../../../assets/series/panchayat.png'),
+  },
+  {
+    id: '5',
+    name: 'Breaking Bad',
+    image: require('../../../assets/series/panchayat.png'),
+  },
+  {
+    id: '6',
+    name: 'Dark',
+    image: require('../../../assets/series/panchayat.png'), 
+  },
+];
+
+
+
+
 const MainScreen = () => {
   const navigation = useNavigation();
   const {profileImage} =useSelector((state)=>state.user)
@@ -96,27 +133,23 @@ const MainScreen = () => {
             </TouchableOpacity>
           </View>
           
-          <FlatList
-            data={[
-               require('../../../assets/series/squiddd.png'),
-                require('../../../assets/series/kabir.png'),
-           require('../../../assets/series/money.png'),
-                 require('../../../assets/series/panchayat.png'),
-                  require('../../../assets/series/panchayat.png'),
-                   require('../../../assets/series/panchayat.png'),
-            ]}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={(_, index) => index.toString()}
-            renderItem={({ item }) => (
-             
-               <TouchableOpacity
-                onPress={() => navigation.navigate('MovieDetails', { image: item })}
-              >
-               <Image source={item} style={styles.flashThumbnail} />
-              </TouchableOpacity>
-            )}
-          />
+         <FlatList
+  data={flashChannelData}
+  horizontal
+  showsHorizontalScrollIndicator={false}
+  keyExtractor={(item) => item.id}
+  renderItem={({ item }) => (
+    <TouchableOpacity
+      onPress={() => navigation.navigate('MovieDetails', {
+        id: item.id,
+        name: item.name,
+        image: item.image,
+      })}
+    >
+      <Image source={item.image} style={styles.flashThumbnail} />
+    </TouchableOpacity>
+  )}
+/>
         </View>
 
     
@@ -127,26 +160,23 @@ const MainScreen = () => {
               <Text style={styles.moreText}>More</Text>
             </TouchableOpacity>
           </View>
-          <FlatList
-            data={[
-              require('../../../assets/series/panchayat.png'),
-                require('../../../assets/series/lapta.png'),
-           require('../../../assets/series/money.png'),
-                 require('../../../assets/series/panchayat.png'),
-                  require('../../../assets/series/panchayat.png'),
-                   require('../../../assets/series/panchayat.png'),
-            ]}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={(_, index) => index.toString()}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                onPress={() => navigation.navigate('MovieDetails', { image: item })}
-              >
-                <Image source={item} style={styles.stayThumbnail} />
-              </TouchableOpacity>
-            )}
-          />
+            <FlatList
+  data={flashChannelData}
+  horizontal
+  showsHorizontalScrollIndicator={false}
+  keyExtractor={(item) => item.id}
+  renderItem={({ item }) => (
+    <TouchableOpacity
+      onPress={() => navigation.navigate('MovieDetails', {
+        id: item.id,
+        name: item.name,
+        image: item.image,
+      })}
+    >
+      <Image source={item.image} style={styles.stayThumbnail} />
+    </TouchableOpacity>
+  )}
+/>
         </View>
       </ScrollView>
     </View>

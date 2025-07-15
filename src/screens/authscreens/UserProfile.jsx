@@ -17,13 +17,15 @@ import { useDispatch } from 'react-redux';
 import { setUserName, setUserCredentials } from '../../redux/Slices/userSlices';
 import { colors } from '../../constants/Colors';
 import { Fonts } from '../../constants/fonts';
+import { useNavigation } from '@react-navigation/native';
 
-const UserProfile = ({ navigation }) => {
+const UserProfile = () => {
   const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const navigation=useNavigation();
 
   const handleSignUp = () => {
     const trimmedName = name.trim();
@@ -52,11 +54,11 @@ const UserProfile = ({ navigation }) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={styles.innerContainer}
-        keyboardVerticalOffset={60}
+       
       >
       
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity onPress={() => navigation.navigate('Signupin')}>
             <ArrowLeftIcon size={24} color="#fff" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>You are almost done</Text>
@@ -100,7 +102,7 @@ const UserProfile = ({ navigation }) => {
   placeholderTextColor="#777"
   textContentType="newPassword"
   autoComplete="password-new"
-  showSoftInputOnFocus={false}
+ 
           />
 
           <Text style={styles.label}>Confirm new password</Text>
@@ -114,7 +116,7 @@ const UserProfile = ({ navigation }) => {
           />
         </ScrollView>
 
-        {/* Sign Up Button */}
+
         <TouchableOpacity onPress={handleSignUp} style={styles.signupButton}>
           <Text style={styles.signupText}>Sign Up</Text>
         </TouchableOpacity>

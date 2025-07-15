@@ -1,65 +1,59 @@
-import { useNavigation } from '@react-navigation/native';
-import React ,{useState} from 'react';
+import { useRoute, useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
 import {
   View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, FlatList
 } from 'react-native';
-import Video from 'react-native-video';
 import { colors } from '../../constants/Colors';
 import { Fonts } from '../../constants/fonts';
+import { useDispatch } from 'react-redux';
+import { addDownload } from '../../redux/Slices/downloadSlice';
+import Icon from 'react-native-vector-icons/Feather'
 
 const MovieDetails = () => {
-     const [paused, setPaused] = useState(true); 
-     const navigation = useNavigation();
+  const [paused, setPaused] = useState(true);
+  const navigation = useNavigation();
+  const route = useRoute();
+  const dispatch=useDispatch();
+    const [isDownloading, setIsDownloading] = useState(false);
+  const [isDownloaded, setIsDownloaded] = useState(false);
+
+  const { id = '0', name = 'Unknown Movie', image = require('../../../assets/series/panchayat.png') } = route.params || {};
 
   const togglePlayback = () => {
     setPaused(prev => !prev);
   };
+
   return (
     <ScrollView style={styles.container}>
-     
       <View style={styles.topHeader}>
         <Image source={require('../../../assets/logo.png')} style={styles.logo} />
       </View>
 
-    
-        <View style={styles.bannerWrapper}>
-        <Video
-          source={require('../../../assets/video/squid.mp4')}
-          style={styles.bannerVideo}
-          resizeMode="cover"
-          repeat
-          paused={paused}
-        />
-         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-    <Text style={styles.backIcon}>←</Text>
-  </TouchableOpacity>
-
-        <TouchableOpacity style={styles.playButton} onPress={togglePlayback}>
-          <Text style={styles.playIcon}>{paused ? '▶' : '⏸'}</Text>
+      <View style={styles.bannerWrapper}>
+        <Image source={image} style={styles.bannerImage} />
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+          <Text style={styles.backIcon}>←</Text>
         </TouchableOpacity>
       </View>
 
-
-    
       <View style={styles.infoSection}>
         <View style={styles.titleRow}>
-           <Text style={styles.title}>S1:E1:Squid Game</Text>
-  <View style={styles.sideButtons}>
-    <TouchableOpacity style={styles.iconButton}>
-      <Image source={require('../../../assets/Downloading/share.png')} style={styles.icon} />
-    </TouchableOpacity>
-    <TouchableOpacity style={styles.iconButton}>
-      <Image source={require('../../../assets/Downloading/heartt.png')} style={styles.icon} />
-    </TouchableOpacity>
+          <Text style={styles.title}>{name}</Text>
+          <View style={styles.sideButtons}>
+            <TouchableOpacity style={styles.iconButton}>
+              <Image source={require('../../../assets/Downloading/share.png')} style={styles.icon} />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.iconButton}>
+              <Image source={require('../../../assets/Downloading/heartt.png')} style={styles.icon} />
+            </TouchableOpacity>
           </View>
         </View>
 
         <View style={styles.row}>
-          <Text style={styles.rating}>8.6 
-            <Image source={require('../../../assets/Downloading/imdb.png')} />
-          </Text>
+          <Text style={styles.rating}>8.6 <Image source={require('../../../assets/Downloading/imdb.png')} /></Text>
           <Text style={styles.duration}>2h 37m</Text>
         </View>
+
         <Text style={styles.genre}>Action, Adventure, Fantasy</Text>
         <Text style={styles.description}>
           An idealistic FBI agent is enlisted Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut reiciendis assumenda quae iste similique ea expedita obcaecati vitae facere et mollitia unde laborum sapiente deleniti, autem quas necessitatibus libero? Tenetur?... <Text style={styles.more}>more</Text>
@@ -67,21 +61,42 @@ const MovieDetails = () => {
         <Text style={styles.label}>Director: <Text style={styles.value}>Denis Villenueve</Text></Text>
         <Text style={styles.label}>Country: <Text style={styles.value}>UK, USA</Text></Text>
         <Text style={styles.label}>Release: <Text style={styles.value}>2021</Text></Text>
-<View style={styles.actions}>
-  <TouchableOpacity style={styles.iconTextButton}>
-    <Image source={require('../../../assets/Downloading/playlist_add.png')} style={styles.icon} />
-    <Text style={styles.iconLabel}>Playlist</Text>
-  </TouchableOpacity>
-  <TouchableOpacity style={styles.iconTextButton} onPress={()=>navigation.navigate('Download')}>
-    <Image source={require('../../../assets/Downloading/downloading.png')} style={styles.icon} />
-    <Text style={styles.iconLabel}>Downloading</Text>
-  </TouchableOpacity>
-</View>
 
-
+        <View style={styles.actions}>
+          <TouchableOpacity style={styles.iconTextButton}>
+            <Image source={require('../../../assets/Downloading/playlist_add.png')} style={styles.icon} />
+            <Text style={styles.iconLabel}>Playlist</Text>
+          </TouchableOpacity>
+    <TouchableOpacity
+  style={styles.iconTextButton}
+  onPress={() => {
+    setIsDownloading(true);
+    setTimeout(() => {
+      setIsDownloading(false);
+      dispatch(addDownload({
+        id: id || Date.now().toString(), 
+        title: name,
+        genres: 'Action, Thriller, Suspense',
+        thumbnail: image,
+      }));
+    }, 5000);
+  }}
+>
+  <Image
+    source={
+      isDownloading
+        ? require('../../../assets/Downloading/downloading.png')
+        :require('../../../assets/Sidebar/watch_history_icon-1.png')  
+    }
+    style={styles.icon}
+  />
+  <Text style={styles.iconLabel}>
+    {isDownloading ? 'Downloading...' : 'Downloaded'}
+  </Text>
+</TouchableOpacity>
+        </View>
       </View>
 
-     
       <View style={styles.castSection}>
         <Text style={styles.sectionTitle}>Cast</Text>
         <FlatList
@@ -98,7 +113,6 @@ const MovieDetails = () => {
         />
       </View>
 
-     
       <ScrollView horizontal style={styles.tabs}>
         {['Season 1', 'Season 2', 'Season 3', 'Season 4'].map((season, i) => (
           <TouchableOpacity key={i} style={styles.tab}>
@@ -107,7 +121,6 @@ const MovieDetails = () => {
         ))}
       </ScrollView>
 
-    
       <FlatList
         horizontal
         data={[1, 2, 3, 4]}
@@ -122,7 +135,6 @@ const MovieDetails = () => {
         style={styles.episodeList}
       />
 
-     
       <View style={styles.recommend}>
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Recommended Series</Text>
@@ -143,6 +155,7 @@ const MovieDetails = () => {
 };
 
 export default MovieDetails;
+
 
 const styles = StyleSheet.create({
   container: { backgroundColor: colors.appBackground, flex: 1 },
@@ -270,9 +283,17 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.Boldd,
   },
 
-  episodeList: { paddingHorizontal: 15, marginTop: 10 },
-  episodeCard: { marginRight: 10 },
-  episodeImage: { width: 150, height: 150, borderRadius: 8 },
+  episodeList: {
+     paddingHorizontal: 15,
+      marginTop: 10 
+    },
+  episodeCard: {
+     marginRight: 10
+    },
+  episodeImage: { 
+    width: 100,
+     height: 150,
+      borderRadius: 8 },
   episodeLabel: {
     position: 'absolute',
     top: 4,
@@ -289,7 +310,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 10,
   },
-  recommendImage: { width: 140, height: 90, borderRadius: 6, marginRight: 10 },
+  recommendImage: {
+     width: 149, 
+     height: 84, 
+     borderRadius: 2,
+      marginRight: 10 },
   bannerVideo: {
     width: '100%',
     height: 200,

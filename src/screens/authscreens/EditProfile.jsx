@@ -83,7 +83,7 @@ const EditProfile = ({ navigation }) => {
         contentContainerStyle={styles.profileGrid}
         columnWrapperStyle={styles.row}
         renderItem={({ item, index }) => {
-          // Center the 5th slot (index 4)
+       
           const isFifth = index === 4;
           const itemStyle = isFifth
             ? [styles.profileItem, styles.centeredFifthItem]

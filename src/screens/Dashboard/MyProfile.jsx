@@ -65,7 +65,7 @@ const MyProfile = ({ navigation }) => {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.profileRow}
       >
-        {profiles.map((profile, index) => (
+        {profiles.slice(0,5).map((profile, index) => (
           <View
             key={index}
             style={[
@@ -125,7 +125,7 @@ const MyProfile = ({ navigation }) => {
             return (
               <TouchableOpacity
                 style={styles.addGenreCard}
-                onPress={() => navigation.navigate('Geners')}
+                onPress={() => navigation.navigate('EditGenres')}
               >
                 <Text style={styles.plusIcon}>+</Text>
               </TouchableOpacity>
