@@ -22,6 +22,7 @@
     "@reduxjs/toolkit": "^2.8.2",
     "react": "19.1.0",
     "react-native": "0.80.1",
+    "react-native-bootsplash": "^6.3.10",
     "react-native-gesture-handler": "^2.27.1",
     "react-native-heroicons": "^4.0.0",
     "react-native-image-picker": "^8.2.1",

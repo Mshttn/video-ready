@@ -16,7 +16,7 @@ const downloadSlice=createSlice({
         },
          removeDownload: (state, action) => {
          state.downloadvideos = state.downloadvideos.filter(
-        (video) => video.title !== action.payload
+        (video) => video.id !== action.payload
          );
           },
      clearDownloads: (state) => {

@@ -21,8 +21,8 @@ screenOptions={{
     tabBarStyle: {
       backgroundColor: colors.tabBarColor,
       height: 65,
-      borderTopWidth: 0, // Optional: remove top border
-      elevation: 0, // Android shadow
+      borderTopWidth: 0,
+      elevation: 0,
     },
   }}
 >

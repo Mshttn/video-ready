@@ -54,7 +54,8 @@ const flashChannelData = [
 
 const MainScreen = () => {
   const navigation = useNavigation();
-  const {profileImage} =useSelector((state)=>state.user)
+  const selectedProfile = useSelector((state) => state.user.selectedProfile);
+
 
   return (
     <View style={styles.container}>
@@ -69,7 +70,17 @@ const MainScreen = () => {
             <BellIcon size={22} color="white" />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.openDrawer()}>
-            <Image source={{uri:profileImage}} size={24} color='white' style={styles.avatar} />
+            <Image
+  source={
+    selectedProfile?.image
+      ? typeof selectedProfile.image === 'string'
+        ? { uri: selectedProfile.image }
+        : selectedProfile.image
+      : require('../../../assets/avtar/avtarr.png') 
+  }
+  style={styles.avatar}
+/>
+
           </TouchableOpacity>
         </View>
       </View>

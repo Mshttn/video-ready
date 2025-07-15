@@ -26,8 +26,8 @@ const DrawerItem = ({ image, label, onPress }) => (
 const CustomDrawer = ({ navigation }) => {
   const dispatch = useDispatch();
   const [avatar, setAvatar] = useState(null);
-  const name = useSelector((state) => state.user.name);
-  const dp =useSelector((state)=>state.user.profileImage)
+ const selectedProfile = useSelector((state) => state.user.selectedProfile);
+
 
   const pickImage = () => {
     Alert.alert(
@@ -68,7 +68,7 @@ const handleSignOut = () => {
     {
       text: 'Sign Out',
      onPress: () => {
-  dispatch(clearUser());
+ 
 
 navigation.replace('Stacknavigation', {
   screen: 'Signupin',
@@ -81,25 +81,27 @@ navigation.replace('Stacknavigation', {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.avatarSection} onPress={pickImage}>
-         <Image
-  source={
-    avatar
-      ? { uri: avatar }
-      : dp
-        ? { uri: dp }
-        : require('../../assets/series/lapta.png')
-  }
-  style={styles.avatar}
-/>
-          <View style={styles.cameraIcon}>
-            <CameraIcon size={16} color="#000" />
-          </View>
-          <Text style={styles.name}>{name || 'Guest'}</Text>
-        </TouchableOpacity>
-        <View style={styles.divider} />
-      </View>
+    <View style={styles.header}>
+  <TouchableOpacity style={styles.avatarSection} onPress={pickImage}>
+    <Image
+      source={
+        avatar
+          ? { uri: avatar }
+          : selectedProfile?.image
+            ? typeof selectedProfile.image === 'string'
+              ? { uri: selectedProfile.image }
+              : selectedProfile.image
+            : require('../../assets/series/lapta.png')
+      }
+      style={styles.avatar}
+    />
+    <View style={styles.cameraIcon}>
+      <CameraIcon size={16} color="#000" />
+    </View>
+    <Text style={styles.name}>{selectedProfile?.name || 'Guest'}</Text>
+  </TouchableOpacity>
+  <View style={styles.divider} />
+</View>
 
       {/* Drawer Items */}
       <DrawerItem image={require('../../assets/Sidebar/myaccount.png')} label="My Account" />
@@ -129,7 +131,7 @@ navigation.replace('Stacknavigation', {
 />
       <DrawerItem image={require('../../assets/Sidebar/smart_tv_quick_login_icon.png')} label="Smart TV Quick Login" />
 
-      {/* ✅ Sign Out button */}
+      
       <DrawerItem
         image={require('../../assets/Sidebar/sign_out_icon.png')}
         label="Sign Out"

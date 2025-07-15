@@ -11,9 +11,10 @@ import {
 } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { useSelector, useDispatch } from 'react-redux';
-import { setUserProfiles } from '../../redux/Slices/userSlices';
+import { setUserProfiles ,setSelectedProfile} from '../../redux/Slices/userSlices';
 import { Fonts } from '../../constants/fonts';
 import { colors } from '../../constants/Colors';
+
 
 const { width } = Dimensions.get('window');
 const itemWidth = width / 2 - 40;
@@ -28,7 +29,7 @@ const EditProfile = ({ navigation }) => {
   const dispatch = useDispatch();
   const { name, profiles } = useSelector((state) => state.user);
 
-  const handleAddProfile = () => {
+    const handleAddProfile = () => {
     launchImageLibrary({ mediaType: 'photo' }, (response) => {
       if (response.didCancel) {
         const newProfile = {
@@ -45,7 +46,6 @@ const EditProfile = ({ navigation }) => {
       }
     });
   };
-
   const updateProfiles = (profile) => {
     if (profiles.length >= 5) {
       Alert.alert('Limit Reached', 'You can only create up to 5 profiles.');
@@ -55,22 +55,22 @@ const EditProfile = ({ navigation }) => {
     dispatch(setUserProfiles(updated));
   };
 
+
   const handleProfileClick = (profile) => {
+     dispatch(setSelectedProfile(profile));
     navigation.navigate('Geners');
   };
 
-  // Always show 5 slots: fill with profiles, then one plus, then empty slots
-  let displayData = [...profiles];
-  if (displayData.length < 5) {
-    // Add one plus button
-    displayData.push({ isAddButton: true });
-    // Fill the rest with empty slots
-    while (displayData.length < 5) {
-      displayData.push({ isEmpty: true });
+  
+  const buildDisplaySlots = () => {
+    const slots = [...profiles.map((p) => ({ ...p, type: 'profile' }))];
+    while (slots.length < 5) {
+      slots.push({ type: 'add' });
     }
-  } else if (displayData.length > 5) {
-    displayData = displayData.slice(0, 5);
-  }
+    return slots.slice(0, 5);
+  };
+
+  const displayData = buildDisplaySlots();
 
   return (
     <View style={styles.container}>
@@ -83,44 +83,37 @@ const EditProfile = ({ navigation }) => {
         contentContainerStyle={styles.profileGrid}
         columnWrapperStyle={styles.row}
         renderItem={({ item, index }) => {
-       
           const isFifth = index === 4;
           const itemStyle = isFifth
             ? [styles.profileItem, styles.centeredFifthItem]
             : styles.profileItem;
 
-          if (item.isAddButton) {
+          if (item.type === 'profile') {
             return (
               <TouchableOpacity
                 style={itemStyle}
-                onPress={handleAddProfile}
+                onPress={() => handleProfileClick(item)}
               >
-                <View style={styles.addCircle}>
-                  <Text style={styles.addPlus}>+</Text>
-                </View>
-                <Text style={styles.addNewText}>Add New</Text>
+                <Image
+                  source={
+                    typeof item.image === 'string'
+                      ? { uri: item.image }
+                      : item.image
+                  }
+                  style={styles.avatar}
+                />
+                <Text style={styles.profileName}>{item.name}</Text>
               </TouchableOpacity>
             );
           }
 
-          if (item.isEmpty) {
-            return <View style={itemStyle} />;
-          }
-
+          // Render Add New
           return (
-            <TouchableOpacity
-              style={itemStyle}
-              onPress={() => handleProfileClick(item)}
-            >
-              <Image
-                source={
-                  typeof item.image === 'string'
-                    ? { uri: item.image }
-                    : item.image
-                }
-                style={styles.avatar}
-              />
-              <Text style={styles.profileName}>{item.name}</Text>
+            <TouchableOpacity style={itemStyle} onPress={handleAddProfile}>
+              <View style={styles.addCircle}>
+                <Text style={styles.addPlus}>+</Text>
+              </View>
+              <Text style={styles.addNewText}>Add New</Text>
             </TouchableOpacity>
           );
         }}
@@ -146,7 +139,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.appBackground,
     paddingTop: 100,
     paddingHorizontal: 20,
-    fontFamily: Fonts.Mediumm
+    fontFamily: Fonts.Mediumm,
   },
   title: {
     fontSize: 22,
@@ -186,17 +179,18 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   addCircle: {
-    width: 100,
-    height: 100,
-    borderRadius: 35,
+    width: 90,
+    height: 90,
+    borderRadius: 45,
     backgroundColor: colors.tabBarColor,
     justifyContent: 'center',
     alignItems: 'center',
   },
   addPlus: {
     fontSize: 32,
+    
     color: colors.appButton,
-    fontFamily: Fonts.Boldd,
+    fontFamily: Fonts.Regularr,
   },
   addNewText: {
     color: colors.textColorBlue,

@@ -92,7 +92,7 @@ const renderItem = ({ item }) => {
 
   return (
     <View style={styles.container}>
-      {/* Header with back button */}
+     
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <ArrowLeftIcon size={24} color={colors.textColorWhite} />

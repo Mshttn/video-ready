@@ -8,6 +8,7 @@ const initialState = {
   age:'',
      profiles: [],
      favoriteGenres: [],
+      selectedProfile: null,
 };
 
 export const userSlices = createSlice({
@@ -36,14 +37,18 @@ setFavoriteGenres: (state, action) => {
    removeGenre:(state,action)=>{
     state.favoriteGenres=state.favoriteGenres.filter((genre)=>genre.title!==action.payload)
    },
+setSelectedProfile: (state, action) => {
+      state.selectedProfile = action.payload;
+    },
 
     clearUser: (state) => {
       state.name = '';
       state.email = '';
       state.password = '';
+       state.selectedProfile = null;
     },
   },
 });
 
-export const { setUserName, setUserCredentials, clearUser,setUserProfiles,setUserImage,setAgeGroup,setFavoriteGenres,removeGenre} = userSlices.actions;
+export const { setUserName, setUserCredentials, clearUser,setUserProfiles,setUserImage,setAgeGroup,setFavoriteGenres,removeGenre, setSelectedProfile,} = userSlices.actions;
 export default userSlices.reducer;

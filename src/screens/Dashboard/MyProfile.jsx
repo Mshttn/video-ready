@@ -15,7 +15,6 @@ import {
   XMarkIcon,
   MagnifyingGlassIcon,
   BellIcon,
- 
 } from 'react-native-heroicons/outline';
 import { colors } from '../../constants/Colors';
 import { Fonts } from '../../constants/fonts';
@@ -24,17 +23,17 @@ const { width } = Dimensions.get('window');
 
 const MyProfile = ({ navigation }) => {
   const dispatch = useDispatch();
-  const { profiles, favoriteGenres,profileImage} = useSelector((state) => state.user);
+  const { profiles, favoriteGenres, selectedProfile } = useSelector((state) => state.user);
 
   const handleGenreRemove = (title) => {
     dispatch(removeGenre(title));
   };
 
-  const activeProfileIndex = 0; 
+  const selectProfile = useSelector((state) => state.user.selectedProfile);
 
   return (
     <View style={styles.container}>
-
+      {/* Header Row */}
       <View style={styles.headerRow}>
         <Image source={require('../../../assets/logo.png')} style={styles.logo} />
         <View style={styles.iconGroup}>
@@ -44,14 +43,22 @@ const MyProfile = ({ navigation }) => {
           <TouchableOpacity style={styles.icon}>
             <BellIcon size={22} color="white" />
           </TouchableOpacity>
-         <TouchableOpacity style={styles.icon}>
-  <Image source={{ uri: profileImage }} style={styles.profileIcon} />
-</TouchableOpacity>
-
+          <TouchableOpacity style={styles.icon}>
+            <Image
+              source={
+                selectedProfile?.image
+                  ? typeof selectedProfile.image === 'string'
+                    ? { uri: selectedProfile.image }
+                    : selectedProfile.image
+                  : require('../../../assets/avtar/avtarr.png')
+              }
+              style={styles.profileIcon}
+            />
+          </TouchableOpacity>
         </View>
       </View>
 
-   
+      {/* Screen Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Text style={styles.backArrow}>{'←'}</Text>
@@ -59,34 +66,37 @@ const MyProfile = ({ navigation }) => {
         <Text style={styles.headerTitle}>My Profiles</Text>
       </View>
 
-   
+      {/* Profile List */}
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.profileRow}
       >
-        {profiles.slice(0,5).map((profile, index) => (
-          <View
-            key={index}
-            style={[
-              styles.profileItem,
-              index === activeProfileIndex && styles.activeProfileItem
-            ]}
-          >
-            <Image
-              source={
-                typeof profile.image === 'string'
-                  ? { uri: profile.image }
-                  : profile.image
-              }
-              style={[
-                styles.profileImage,
-                index === activeProfileIndex && styles.activeProfileImage
-              ]}
-            />
-            <Text style={styles.profileName}>{profile.name}</Text>
-          </View>
-        ))}
+       {profiles.slice(0, 5).map((profile, index) => {
+  const isActive =
+    selectedProfile?.name === profile.name &&
+    selectedProfile?.image === profile.image;
+
+  return (
+    <View
+      key={index}
+      style={[
+        styles.profileItem,
+        isActive && styles.activeProfileItem,
+      ]}
+    >
+      <Image
+        source={
+          typeof profile.image === 'string'
+            ? { uri: profile.image }
+            : profile.image
+        }
+        style={styles.profileImage}
+      />
+      <Text style={styles.profileName}>{profile.name}</Text>
+    </View>
+  );
+})}
 
         {profiles.length < 5 && (
           <TouchableOpacity
@@ -101,15 +111,17 @@ const MyProfile = ({ navigation }) => {
         )}
       </ScrollView>
 
-   
+      {/* Edit Profile Button */}
       <TouchableOpacity
-        onPress={() => navigation.navigate('EditProfile')}
+        onPress={() => navigation.navigate('MyprofileEdit')}
         style={styles.editBtn}
       >
         <Text style={styles.editBtnText}>Edit Profile</Text>
       </TouchableOpacity>
 
-   
+      <View style={styles.divider} />
+
+      {/* Favorite Genres */}
       <Text style={styles.sectionTitle}>Favourite Genres</Text>
       <FlatList
         data={[
@@ -118,7 +130,7 @@ const MyProfile = ({ navigation }) => {
         ]}
         keyExtractor={(item, index) => index.toString()}
         numColumns={3}
-        columnWrapperStyle={{ justifyContent: 'flex-start', marginBottom: 16,gap:4 }}
+        columnWrapperStyle={{ justifyContent: 'flex-start', marginBottom: 16, gap: 4 }}
         contentContainerStyle={styles.genreList}
         renderItem={({ item }) => {
           if (item.isAddButton) {
@@ -151,6 +163,7 @@ const MyProfile = ({ navigation }) => {
 };
 
 export default MyProfile;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -179,7 +192,6 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
   },
   backArrow: {
     color: colors.textColorWhite,
@@ -195,21 +207,31 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 16,
+    marginVertical: 16,
   },
   profileItem: {
     alignItems: 'center',
     marginRight: 16,
   },
   activeProfileItem: {
-    borderColor: colors.appButton,
-    
+  //  borderWidth: 1,
+  // borderColor: colors.appButton,
+  // padding: 4,
+  // borderRadius: 40,
+  shadowColor: '#fff',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.3,
+  shadowRadius: 9,
+
+  
    
-    padding: 2,
+   
+    
   },
   profileImage: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: 90,
+    height: 90,
+    borderRadius: 45,
   },
   activeProfileImage: {
     borderColor: colors.appButton,
@@ -243,16 +265,18 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.Mediumm,
   },
   editBtn: {
-    backgroundColor: colors.appButton,
-    paddingVertical: 12,
-    borderRadius: 8,
     alignItems: 'center',
     marginBottom: 20,
   },
   editBtnText: {
     color: colors.textColorWhite,
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: Fonts.Boldd,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: '#334155',
+    marginBottom: 16,
   },
   sectionTitle: {
     color: colors.textColorWhite,
@@ -260,21 +284,17 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.Boldd,
     marginBottom: 12,
   },
-  columnWrapper: {
-    justifyContent: 'space-between',
-    marginBottom: 16,
-  },
   genreList: {
     paddingBottom: 40,
   },
   genreCard: {
     width: 108,
-    height:132,
+    height: 132,
     backgroundColor: colors.tabBarColor,
     borderRadius: 2,
     overflow: 'hidden',
     position: 'relative',
-    marginRight:9
+    marginRight: 9,
   },
   genreImage: {
     width: '100%',
@@ -285,7 +305,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: Fonts.Mediumm,
     paddingVertical: 4,
-    backgroundColor: colors.tabBarColor,
   },
   removeIcon: {
     position: 'absolute',
