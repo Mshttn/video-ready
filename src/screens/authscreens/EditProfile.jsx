@@ -5,15 +5,15 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
-  ScrollView,
+  FlatList,
   Dimensions,
   Alert,
 } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  setUserProfiles,
-} from '../../redux/Slices/userSlices';
+import { setUserProfiles } from '../../redux/Slices/userSlices';
+import { Fonts } from '../../constants/fonts';
+import { colors } from '../../constants/Colors';
 
 const { width } = Dimensions.get('window');
 const itemWidth = width / 2 - 40;
@@ -26,7 +26,7 @@ const defaultAvatars = [
 
 const EditProfile = ({ navigation }) => {
   const dispatch = useDispatch();
-  const { name, profileImage, profiles } = useSelector((state) => state.user);
+  const { name, profiles } = useSelector((state) => state.user);
 
   const handleAddProfile = () => {
     launchImageLibrary({ mediaType: 'photo' }, (response) => {
@@ -51,8 +51,7 @@ const EditProfile = ({ navigation }) => {
       Alert.alert('Limit Reached', 'You can only create up to 5 profiles.');
       return;
     }
-
-    const updated = [ profile,...profiles];
+    const updated = [...profiles, profile];
     dispatch(setUserProfiles(updated));
   };
 
@@ -60,32 +59,40 @@ const EditProfile = ({ navigation }) => {
     navigation.navigate('Geners');
   };
 
+  // Always show 5 slots: fill with profiles, then one plus, then empty slots
+  let displayData = [...profiles];
+  if (displayData.length < 5) {
+    // Add one plus button
+    displayData.push({ isAddButton: true });
+    // Fill the rest with empty slots
+    while (displayData.length < 5) {
+      displayData.push({ isEmpty: true });
+    }
+  } else if (displayData.length > 5) {
+    displayData = displayData.slice(0, 5);
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Who is Watching?</Text>
 
-      {/* Sub Profiles */}
-      <ScrollView contentContainerStyle={styles.profileGrid}>
-        {Array.from({ length: 5 }).map((_, index) => {
-          const item = profiles[index];
-          const isLastCentered = index === 4;
+      <FlatList
+        data={displayData}
+        keyExtractor={(_, index) => index.toString()}
+        numColumns={2}
+        contentContainerStyle={styles.profileGrid}
+        columnWrapperStyle={styles.row}
+        renderItem={({ item, index }) => {
+          // Center the 5th slot (index 4)
+          const isFifth = index === 4;
+          const itemStyle = isFifth
+            ? [styles.profileItem, styles.centeredFifthItem]
+            : styles.profileItem;
 
-          if (item) {
+          if (item.isAddButton) {
             return (
               <TouchableOpacity
-                key={index}
-                style={[styles.profileItem, isLastCentered && styles.centerItem]}
-                onPress={() => handleProfileClick(item)}
-              >
-                <Image source={item.image} style={styles.avatar} />
-                <Text style={styles.profileName}>{item.name}</Text>
-              </TouchableOpacity>
-            );
-          } else {
-            return (
-              <TouchableOpacity
-                key={index}
-                style={[styles.profileItem, isLastCentered && styles.centerItem]}
+                style={itemStyle}
                 onPress={handleAddProfile}
               >
                 <View style={styles.addCircle}>
@@ -95,10 +102,30 @@ const EditProfile = ({ navigation }) => {
               </TouchableOpacity>
             );
           }
-        })}
-      </ScrollView>
 
-      {/* Edit Button */}
+          if (item.isEmpty) {
+            return <View style={itemStyle} />;
+          }
+
+          return (
+            <TouchableOpacity
+              style={itemStyle}
+              onPress={() => handleProfileClick(item)}
+            >
+              <Image
+                source={
+                  typeof item.image === 'string'
+                    ? { uri: item.image }
+                    : item.image
+                }
+                style={styles.avatar}
+              />
+              <Text style={styles.profileName}>{item.name}</Text>
+            </TouchableOpacity>
+          );
+        }}
+      />
+
       <View style={{ marginTop: 10, marginBottom: 30 }}>
         <TouchableOpacity
           style={styles.editButton}
@@ -116,69 +143,77 @@ export default EditProfile;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#061124',
-    paddingTop: 50,
+    backgroundColor: colors.appBackground,
+    paddingTop: 100,
     paddingHorizontal: 20,
+    fontFamily: Fonts.Mediumm
   },
   title: {
     fontSize: 22,
-    color: '#fff',
-    fontWeight: 'bold',
+    color: colors.textColorWhite,
+    fontFamily: Fonts.Boldd,
     textAlign: 'center',
-    marginBottom: 30,
+    marginBottom: 40,
   },
   profileGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
     paddingBottom: 20,
+  },
+  row: {
+    justifyContent: 'space-between',
+    marginBottom: 30,
   },
   profileItem: {
     width: itemWidth,
     alignItems: 'center',
     marginBottom: 30,
   },
-  centerItem: {
+  centeredFifthItem: {
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
     alignSelf: 'center',
   },
   avatar: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
+    width: 90,
+    height: 90,
+    borderRadius: 45,
     marginBottom: 8,
   },
   profileName: {
-    color: '#fff',
+    color: colors.textColorWhite,
     fontSize: 14,
+    fontFamily: Fonts.Mediumm,
     textAlign: 'center',
   },
   addCircle: {
-    width: 70,
-    height: 70,
+    width: 100,
+    height: 100,
     borderRadius: 35,
-    backgroundColor: '#0d1a2f',
+    backgroundColor: colors.tabBarColor,
     justifyContent: 'center',
     alignItems: 'center',
   },
   addPlus: {
     fontSize: 32,
-    color: '#1679F8',
+    color: colors.appButton,
+    fontFamily: Fonts.Boldd,
   },
   addNewText: {
-    color: '#1679F8',
+    color: colors.textColorBlue,
     marginTop: 6,
     fontSize: 14,
+    fontFamily: Fonts.Mediumm,
   },
   editButton: {
-    backgroundColor: '#1679F8',
+    backgroundColor: colors.appButton,
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
     marginHorizontal: 10,
   },
   editButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color: colors.textColorWhite,
+    fontFamily: Fonts.Boldd,
     fontSize: 16,
   },
 });

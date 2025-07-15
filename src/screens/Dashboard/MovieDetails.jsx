@@ -4,9 +4,11 @@ import {
   View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, FlatList
 } from 'react-native';
 import Video from 'react-native-video';
+import { colors } from '../../constants/Colors';
+import { Fonts } from '../../constants/fonts';
 
 const MovieDetails = () => {
-     const [paused, setPaused] = useState(true); // Start paused
+     const [paused, setPaused] = useState(true); 
      const navigation = useNavigation();
 
   const togglePlayback = () => {
@@ -14,12 +16,12 @@ const MovieDetails = () => {
   };
   return (
     <ScrollView style={styles.container}>
-      {/* Top Logo */}
+     
       <View style={styles.topHeader}>
         <Image source={require('../../../assets/logo.png')} style={styles.logo} />
       </View>
 
-      {/* Top Banner */}
+    
         <View style={styles.bannerWrapper}>
         <Video
           source={require('../../../assets/video/squid.mp4')}
@@ -38,7 +40,7 @@ const MovieDetails = () => {
       </View>
 
 
-      {/* Info Section */}
+    
       <View style={styles.infoSection}>
         <View style={styles.titleRow}>
            <Text style={styles.title}>S1:E1:Squid Game</Text>
@@ -79,7 +81,7 @@ const MovieDetails = () => {
 
       </View>
 
-      {/* Cast Section */}
+     
       <View style={styles.castSection}>
         <Text style={styles.sectionTitle}>Cast</Text>
         <FlatList
@@ -96,7 +98,7 @@ const MovieDetails = () => {
         />
       </View>
 
-      {/* Seasons Tabs */}
+     
       <ScrollView horizontal style={styles.tabs}>
         {['Season 1', 'Season 2', 'Season 3', 'Season 4'].map((season, i) => (
           <TouchableOpacity key={i} style={styles.tab}>
@@ -105,7 +107,7 @@ const MovieDetails = () => {
         ))}
       </ScrollView>
 
-      {/* Episode List */}
+    
       <FlatList
         horizontal
         data={[1, 2, 3, 4]}
@@ -120,7 +122,7 @@ const MovieDetails = () => {
         style={styles.episodeList}
       />
 
-      {/* Recommended Section */}
+     
       <View style={styles.recommend}>
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Recommended Series</Text>
@@ -143,9 +145,8 @@ const MovieDetails = () => {
 export default MovieDetails;
 
 const styles = StyleSheet.create({
-  container: { backgroundColor: '#061124', flex: 1 },
+  container: { backgroundColor: colors.appBackground, flex: 1 },
   topHeader: {
-    
     paddingTop: 45,
     paddingBottom: 10,
   },
@@ -158,7 +159,7 @@ const styles = StyleSheet.create({
   bannerWrapper: { position: 'relative' },
   bannerImage: { width: '100%', height: 200 },
   playButton: { position: 'absolute', top: '45%', left: '45%' },
-  playIcon: { fontSize: 30, color: '#fff' },
+  playIcon: { fontSize: 30, color: colors.textColorWhite },
 
   infoSection: { padding: 15 },
   titleRow: {
@@ -166,62 +167,120 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  title: { color: '#fff', fontSize: 18, fontWeight: 'bold' },
+  title: { color: colors.textColorWhite, fontSize: 18, fontFamily: Fonts.Boldd },
   sideButtons: {
     flexDirection: 'row',
     gap: 10,
   },
   sideButton: {
-    backgroundColor: '#1679F8',
+    backgroundColor: colors.appButton,
     borderRadius: 6,
     paddingHorizontal: 10,
     paddingVertical: 4,
   },
   sideButtonText: {
-    color: '#fff',
+    color: colors.textColorWhite,
     fontSize: 12,
-    fontWeight: '500',
+    fontFamily: Fonts.Mediumm,
   },
 
   row: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  marginVertical: 5,
-},
-rating: {
-  color: '#ccc',
-  marginRight: 8, // 👈 adds space between IMDb and duration
-},
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 5,
+  },
+  rating: {
+    color: colors.descriptionTextColor,
+    marginRight: 8,
+  },
+  duration: { 
+    color: colors.descriptionTextColor,
+  },
+  genre: { 
+    color: colors.descriptionTextColor,
+    marginBottom: 5, 
+    fontFamily: Fonts.Mediumm,
+  },
+  description: { 
+    color: colors.descriptionTextColor, 
+    fontFamily: Fonts.Regularr,
+  },
+  more: { 
+    color: colors.textColorBlue,
+    fontFamily: Fonts.Mediumm,
+  },
+  label: { 
+    color: colors.labelColor,
+    marginTop: 2, 
+    fontFamily: Fonts.Mediumm,
+  },
+  value: { 
+    color: colors.textColorWhite,
+    fontFamily: Fonts.Mediumm,
+  },
+  actions: { 
+    flexDirection: 'row',
+    gap: 20, 
+    marginTop: 10,
+  },
 
-  duration: { color: '#ccc' },
-  genre: { color: '#aaa', marginBottom: 5 },
-  description: { color: '#ccc' },
-  more: { color: '#1679F8' },
-  label: { color: '#888', marginTop: 2 },
-  value: { color: '#fff' },
-  actions: { flexDirection: 'row', gap: 20, marginTop: 10 },
+  castSection: { 
+    paddingHorizontal: 15,
+    marginTop: 10,
+  },
+  sectionTitle: { 
+    color: colors.textColorWhite,
+    fontSize: 16,
+    fontFamily: Fonts.Boldd,
+    marginBottom: 8,
+  },
+  castItem: { 
+    alignItems: 'center',
+    marginRight: 12,
+  },
+  castImage: { 
+    width: 60, 
+    height: 60, 
+    borderRadius: 30,
+  },
+  castName: { 
+    color: colors.textColorWhite,
+    fontSize: 12, 
+    marginTop: 4,
+    fontFamily: Fonts.Mediumm,
+  },
 
-  castSection: { paddingHorizontal: 15, marginTop: 10 },
-  sectionTitle: { color: '#fff', fontSize: 16, fontWeight: 'bold', marginBottom: 8 },
-  castItem: { alignItems: 'center', marginRight: 12 },
-  castImage: { width: 60, height: 60, borderRadius: 30 },
-  castName: { color: '#fff', fontSize: 12, marginTop: 4 },
-
-  tabs: { paddingHorizontal: 15, marginTop: 15 },
-  tab: { marginRight: 10 },
-  tabText: { color: '#aaa', paddingVertical: 6, paddingHorizontal: 14, borderRadius: 20 },
-  activeTab: { backgroundColor: '#1679F8', color: '#fff' },
+  tabs: { 
+    paddingHorizontal: 15,
+    marginTop: 15,
+  },
+  tab: { 
+    marginRight: 10,
+  },
+  tabText: { 
+    color: colors.descriptionTextColor, 
+    paddingVertical: 6,
+    paddingHorizontal: 14,
+    borderRadius: 20,
+    fontFamily: Fonts.Mediumm,
+  },
+  activeTab: { 
+    backgroundColor: colors.appButton,
+    color: colors.textColorWhite, 
+    fontFamily: Fonts.Boldd,
+  },
 
   episodeList: { paddingHorizontal: 15, marginTop: 10 },
   episodeCard: { marginRight: 10 },
-  episodeImage: { width: 120, height: 90, borderRadius: 8 },
+  episodeImage: { width: 150, height: 150, borderRadius: 8 },
   episodeLabel: {
     position: 'absolute',
     top: 4,
     left: 4,
-    backgroundColor: 'white',
+    backgroundColor: colors.textColorWhite,
     padding: 2,
     fontSize: 12,
+    fontFamily: Fonts.Mediumm,
   },
 
   recommend: { marginTop: 20, paddingHorizontal: 15 },
@@ -232,45 +291,42 @@ rating: {
   },
   recommendImage: { width: 140, height: 90, borderRadius: 6, marginRight: 10 },
   bannerVideo: {
-  width: '100%',
-  height: 200,
-  borderRadius: 8,
-},
-backButton: {
-  position: 'absolute',
-  top: 15,
-  left: 15,
- 
-  paddingHorizontal: 10,
-  paddingVertical: 5,
-  borderRadius: 20,
-  zIndex: 2,
-},
-backIcon: {
-  color: '#fff',
-  fontSize: 18,
-},
-iconButton: {
- 
-  borderRadius: 6,
-  padding: 6,
-  marginLeft: 8,
-},
-
-icon: {
-  width: 18,
-  height: 18,
-  resizeMode: 'contain',
-},
-iconTextButton: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  marginRight: 20, // spacing between two buttons
-},
-iconLabel: {
-  color: '#fff',
-  fontSize: 13,
-  marginLeft: 6, // spacing between icon and text
-},
-
+    width: '100%',
+    height: 200,
+    borderRadius: 8,
+  },
+  backButton: {
+    position: 'absolute',
+    top: 15,
+    left: 15,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 20,
+    zIndex: 2,
+  },
+  backIcon: {
+    color: colors.textColorWhite,
+    fontSize: 18,
+  },
+  iconButton: {
+    borderRadius: 6,
+    padding: 6,
+    marginLeft: 8,
+  },
+  icon: {
+    width: 18,
+    height: 18,
+    resizeMode: 'contain',
+  },
+  iconTextButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 20,
+  },
+  iconLabel: {
+    color: colors.textColorWhite,
+    fontSize: 13,
+    marginLeft: 6,
+    fontFamily: Fonts.Mediumm,
+  },
 });

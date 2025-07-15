@@ -13,6 +13,8 @@ import { geners } from '../../constants/geners';
 import { useNavigation, CommonActions } from '@react-navigation/native';
 import { useDispatch , useSelector} from 'react-redux';
 import { setFavoriteGenres } from '../../redux/Slices/userSlices';
+import { colors } from '../../constants/Colors';
+import { Fonts } from '../../constants/fonts';
 
 
 const { width } = Dimensions.get('window');
@@ -61,9 +63,9 @@ const renderItem = ({ item }) => {
         <View style={styles.overlay}>
           <Text style={styles.genreText}>{item.title}</Text>
           {isSelected ? (
-            <CheckIcon size={20} color="#1E90FF" />
+            <CheckIcon size={20} color={colors.textColorBlue} />
           ) : (
-            <Square2StackIcon size={20} color="#ccc" />
+            <Square2StackIcon size={20} color={colors.descriptionTextColor} />
           )}
         </View>
       </ImageBackground>
@@ -85,10 +87,10 @@ const renderItem = ({ item }) => {
       {/* Header with back button */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <ArrowLeftIcon size={24} color="#fff" />
+          <ArrowLeftIcon size={24} color={colors.textColorWhite} />
         </TouchableOpacity>
         <Text style={styles.title}>Genre</Text>
-        <View style={{ width: 24 }} /> {/* placeholder for spacing */}
+        <View style={{ width: 24 }} /> 
       </View>
 
       <Text style={styles.subTitle}>Choose at least 3 favorite genres</Text>
@@ -127,7 +129,7 @@ export default Geners;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#061124',
+    backgroundColor: colors.appBackground,
     paddingTop: 50,
     paddingHorizontal: 15,
   },
@@ -138,15 +140,16 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   title: {
-    color: '#fff',
+    color: colors.textColorWhite,
     fontSize: 22,
-    fontWeight: '700',
+    fontFamily: Fonts.Boldd,
     textAlign: 'center',
+    marginBottom: 0,
   },
   subTitle: {
-    color: '#aaa',
+    color: colors.descriptionTextColor,
     fontSize: 14,
-    fontWeight: 'bold', // 👈 make subtitle bold
+    fontFamily: Fonts.Boldd,
     textAlign: 'center',
     marginBottom: 20,
   },
@@ -161,15 +164,15 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   overlay: {
-    backgroundColor: 'black',
+    backgroundColor: colors.appBackground,
     padding: 8,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   genreText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color: colors.textColorWhite,
+    fontFamily: Fonts.Boldd,
     fontSize: 14,
   },
   buttonContainer: {
@@ -178,19 +181,20 @@ const styles = StyleSheet.create({
   },
   confirmBtn: {
     width: '100%',
-    backgroundColor: '#1679F8',
+    backgroundColor: colors.appButton,
     paddingVertical: 14,
     borderRadius: 8,
     marginBottom: 12,
     alignItems: 'center',
   },
   confirmText: {
-    color: '#fff',
+    color: colors.textColorWhite,
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: Fonts.Semiboldd,
   },
   skipText: {
-    color: '#1679F8',
+    color: colors.textColorBlue,
     fontSize: 16,
+    fontFamily: Fonts.Mediumm,
   },
 });

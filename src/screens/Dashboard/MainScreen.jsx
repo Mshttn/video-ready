@@ -9,9 +9,11 @@ import {
   FlatList,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { MagnifyingGlassIcon, UserIcon } from 'react-native-heroicons/solid';
+import { MagnifyingGlassIcon, PauseIcon, PlayIcon, UserIcon } from 'react-native-heroicons/solid';
 import { BellIcon, UserCircleIcon } from 'react-native-heroicons/outline';
 import { useSelector } from 'react-redux';
+import { colors } from '../../constants/Colors';
+import { Fonts } from '../../constants/fonts';
 
 const MainScreen = () => {
   const navigation = useNavigation();
@@ -19,7 +21,7 @@ const MainScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/* Top Header */}
+
       <View style={styles.header}>
         <Image source={require('../../../assets/logo.png')} style={styles.logo} />
         <View style={styles.headerIcons}>
@@ -40,36 +42,52 @@ const MainScreen = () => {
       
        <View style={styles.banner}>
   <Image
-    source={require('../../../assets/morbius.jpg')}
+    source={require('../../../assets/movbanner.png')}
     style={styles.bannerImage}
   />
 
   <View style={styles.bannerOverlay}>
-    <Text style={styles.movieTitle}>Morbius</Text>
+    <View style={styles.gradientLayer1} />
+    <View style={styles.gradientLayer2} />
+    <View style={styles.gradientLayer3} />
+    <View style={styles.gradientLayer4} />
+    <View style={styles.gradientLayer5} />
+    <View style={styles.bannerContent}>
+      <Text style={styles.movieTitle}>Morbius</Text>
 
-    <View style={styles.buttonRow}>
-      <TouchableOpacity>
-        <Text style={styles.moreDetails}>More details</Text>
-      </TouchableOpacity>
+      <View style={styles.buttonRow}>
+        <TouchableOpacity>
+          <View style={styles.moreDetailsRow}>
+            <Image
+              source={require('../../../assets/info/info.png')}
+              style={styles.moreicon}
+            />
+            <Text style={styles.moreDetails}>More details</Text>
+          </View>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={styles.watchButton}>
-        <Text style={styles.watchButtonText}>▶ Watch Now</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.watchButton}>
+          <View style={styles.watchButtonContent}>
+            <PlayIcon size={16} color="white" style={styles.playIcon} />
+            <Text style={styles.watchButtonText}>Watch Now</Text>
+          </View>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={styles.playlistRow}>
-        <Image
-          source={require('../../../assets/Downloading/playlist_add.png')}
-          style={styles.playlistIcon}
-        />
-        <Text style={styles.addToPlaylist}>Add to playlist</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.playlistRow}>
+          <Image
+            source={require('../../../assets/Downloading/playlist_add.png')}
+            style={styles.playlistIcon}
+          />
+          <Text style={styles.addToPlaylist}>Add to playlist</Text>
+        </TouchableOpacity>
+      </View>
+
+      <Text style={styles.genre}>Action | Thriller | Suspense</Text>
     </View>
-
-    <Text style={styles.genre}>Action | Thriller | Suspense</Text>
   </View>
 </View>
 
-        {/* Flash Channel Section */}
+       
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Flash Channel</Text>
@@ -140,7 +158,7 @@ export default MainScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#061124',
+    backgroundColor: colors.appBackground,
   },
   header: {
     flexDirection: 'row',
@@ -167,7 +185,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
 
-  // Banner
+  
 banner: {
   width: 375,
   height: 375,
@@ -175,32 +193,76 @@ banner: {
   position: 'relative',
   marginBottom: 10,
 },
-
 bannerImage: {
   width: '100%',
   height: '100%',
   resizeMode: 'cover',
   borderRadius: 8,
 },
-
 bannerOverlay: {
   position: 'absolute',
   top: 0,
   left: 0,
   right: 0,
   bottom: 0,
-  justifyContent: 'flex-end',
-  padding: 16,
-  backgroundColor: 'rgba(0, 0, 0, 0.35)', // semi-transparent dark overlay
   borderRadius: 8,
+},
+gradientLayer1: {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  height: '20%',
+  backgroundColor: 'rgba(0, 0, 0, 0)',
+},
+gradientLayer2: {
+  position: 'absolute',
+  top: '20%',
+  left: 0,
+  right: 0,
+  height: '20%',
+  backgroundColor: 'rgba(0, 0, 0, 0.1)',
+},
+gradientLayer3: {
+  position: 'absolute',
+  top: '40%',
+  left: 0,
+  right: 0,
+  height: '20%',
+  backgroundColor: 'rgba(0, 0, 0, 0.2)',
+},
+gradientLayer4: {
+  position: 'absolute',
+  top: '60%',
+  left: 0,
+  right: 0,
+  height: '20%',
+  backgroundColor: 'rgba(0, 0, 0, 0.3)',
+},
+gradientLayer5: {
+  position: 'absolute',
+  top: '80%',
+  left: 0,
+  right: 0,
+  height: '20%',
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+},
+bannerContent: {
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  right: 0,
+  padding: 16,
+  justifyContent: 'flex-end',
 },
 
 movieTitle: {
   fontSize: 26,
-  color: '#fff',
-  fontWeight: 'bold',
+  color: colors.textColorWhite,
+  fontFamily: Fonts.Boldd,
   marginBottom: 10,
-  textAlign:'center'
+  textAlign: 'center',
+  alignSelf: 'center',
 },
 
 buttonRow: {
@@ -211,23 +273,31 @@ buttonRow: {
 },
 
 moreDetails: {
-  color: '#aaa',
-  fontSize: 14,
+  color: colors.descriptionTextColor,
+  fontSize: 10,
   marginHorizontal: 5,
+  fontFamily: Fonts.Mediumm,
 },
 
 watchButton: {
-  backgroundColor: '#1679F8',
+  backgroundColor: colors.appButton,
   paddingHorizontal: 16,
-  height: 32,
+  paddingVertical: 8,
   justifyContent: 'center',
   alignItems: 'center',
   borderRadius: 6,
 },
-
+watchButtonContent: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+},
+playIcon: {
+  marginRight: 4,
+},
 watchButtonText: {
-  color: '#fff',
-  fontWeight: '600',
+  color: colors.textColorWhite,
+  fontFamily: Fonts.Boldd,
   fontSize: 14,
 },
 
@@ -243,16 +313,25 @@ playlistIcon: {
   tintColor: '#aaa',
   marginRight: 4,
 },
+moreicon:{
+   width: 18,
+  height: 18,
+  tintColor: '#aaa',
+ 
+
+},
 
 addToPlaylist: {
-  color: '#aaa',
-  fontSize: 14,
+  color: colors.descriptionTextColor,
+  fontSize: 10,
+  fontFamily: Fonts.Mediumm,
 },
 
 genre: {
-  color: '#ddd',
+  color: colors.textColorWhite,
   fontSize: 14,
   textAlign: 'center',
+  fontFamily: Fonts.Mediumm,
 },
 
   // Sections
@@ -268,12 +347,13 @@ genre: {
   },
   sectionTitle: {
     fontSize: 18,
-    color: '#fff',
-    fontWeight: 'bold',
+    color: colors.textColorWhite,
+    fontFamily: Fonts.Boldd,
   },
   moreText: {
-    color: '#1679F8',
+    color: colors.textColorBlue,
     fontSize: 14,
+    fontFamily: Fonts.Mediumm,
   },
 
   flashThumbnail: {
@@ -281,13 +361,18 @@ genre: {
     height: 84,
     borderRadius: 8,
     marginRight: 10,
-    backgroundColor: '#333',
+    backgroundColor: colors.tabBarColor,
   },
   stayThumbnail: {
     width: 100,
     height: 150,
     borderRadius: 8,
     marginRight: 10,
-    backgroundColor: '#333',
+    resizeMode:'cover',
+    backgroundColor: colors.tabBarColor,
+  },
+  moreDetailsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

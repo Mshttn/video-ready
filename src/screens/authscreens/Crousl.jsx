@@ -10,6 +10,8 @@ import {
   StyleSheet,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { colors } from '../../constants/Colors';
+import { Fonts } from '../../constants/fonts';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -24,16 +26,16 @@ const onboardingSlides = [
   },
   {
     key: 'slide2',
-    background: require('../../../assets/slidesss/Intro1.png'),
+    background: require('../../../assets/Intro1-2/Intro1.png'),
     headline: 'STREAM',
     tagline: 'Anywhere on',
     tagline2: '5 devices, 2 concurrently',
     note: 'Watch on Mobile, Smart TV and more',
     cta: 'GET ENTERTAINED',
   },
-    {
+  {
     key: 'slide3',
-    background: require('../../../assets/slidesss/Intro1.png'),
+    background: require('../../../assets/igm/Intro1.png'),
     headline: 'STREAM',
     tagline: 'Anywhere on',
     tagline2: '5 devices, 2 concurrently',
@@ -43,49 +45,46 @@ const onboardingSlides = [
 ];
 
 const Crousl = () => {
-    const navigation= useNavigation();
+  const navigation = useNavigation();
   const [currentSlide, setCurrentSlide] = useState(0);
   const listRef = useRef(null);
 
   const Slide = ({ item }) => (
     <SafeAreaView>
-
-   
-    <View style={styles.slide}>
-      {/* Top Half - Image */}
-      <View style={styles.imageContainer}>
-        <Image source={item.background} style={styles.image} resizeMode="cover" />
-      </View>
-
-      {/* Bottom Half - Overlay */}
-      <View style={styles.overlayContainer}>
-        <Image source={require('../../../assets/vrr/vr_logo2x.png')} style={styles.appLogo} />
-        <Text style={styles.heading}>{item.headline}</Text>
-        <View style={styles.taglineContainer}>
-          <Text style={styles.tagline}>{item.tagline}</Text>
-          {item.tagline2 && <Text style={styles.tagline}>{item.tagline2}</Text>}
-        </View>
-        <Text style={styles.note}>{item.note}</Text>
-
-        <View style={styles.dotWrapper}>
-          {onboardingSlides.map((_, idx) => (
-            <View
-              key={idx}
-              style={[styles.dot, currentSlide === idx && styles.activeDot]}
-            />
-          ))}
+      <View style={styles.slide}>
+       
+        <View style={styles.imageContainer}>
+          <Image source={item.background} style={styles.image} resizeMode="cover" />
         </View>
 
-        <TouchableOpacity onPress={()=>navigation.navigate('Signupin')} style={styles.ctaButton}>
-          <Text style={styles.ctaText}>{item.cta}</Text>
-        </TouchableOpacity>
+       
+        <View style={styles.overlayContainer}>
+          <Image source={require('../../../assets/vrr/vr_logo2x.png')} style={styles.appLogo} />
+          <Text style={styles.heading}>{item.headline}</Text>
 
-        <TouchableOpacity>
-          <Text style={styles.skipBtn}>Skip</Text>
-        </TouchableOpacity>
+          <View style={styles.taglineContainer}>
+            <Text style={styles.tagline}>{item.tagline}</Text>
+            {item.tagline2 && <Text style={styles.tagline}>{item.tagline2}</Text>}
+          </View>
+
+          <Text style={styles.note}>{item.note}</Text>
+
+          <View style={styles.dotWrapper}>
+            {onboardingSlides.map((_, idx) => (
+              <View key={idx} style={[styles.dot, currentSlide === idx && styles.activeDot]} />
+            ))}
+          </View>
+
+          <TouchableOpacity onPress={() => navigation.navigate('Signupin')} style={styles.ctaButton}>
+            <Text style={styles.ctaText}>{item.cta}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity>
+            <Text style={styles.skipBtn}>Skip</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
-     </SafeAreaView>
+    </SafeAreaView>
   );
 
   return (
@@ -95,7 +94,7 @@ const Crousl = () => {
       keyExtractor={(item) => item.key}
       renderItem={({ item }) => <Slide item={item} />}
       horizontal
-      pagingEnabled
+       pagingEnabled
       showsHorizontalScrollIndicator={false}
       onScroll={(e) => {
         const offsetX = e.nativeEvent.contentOffset.x;
@@ -112,7 +111,7 @@ const styles = StyleSheet.create({
   slide: {
     width: screenWidth,
     height: screenHeight,
-    backgroundColor: '#001122', // fallback
+    backgroundColor: colors.appBackground,
   },
   imageContainer: {
     height: screenHeight * 0.45,
@@ -124,7 +123,7 @@ const styles = StyleSheet.create({
   },
   overlayContainer: {
     height: screenHeight * 0.5,
-    backgroundColor: '#001122',
+    backgroundColor: colors.appBackground,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 20,
@@ -136,9 +135,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   heading: {
-    color: '#3FA9F5',
+    color: colors.textColorBlue,
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: Fonts.Boldd,
     letterSpacing: 4,
     marginBottom: 10,
   },
@@ -148,53 +147,50 @@ const styles = StyleSheet.create({
   },
   tagline: {
     fontSize: 18,
-    color: '#fff',
-    fontWeight: '600',
+    color: colors.textColorWhite,
+    fontFamily: Fonts.Mediumm,
     textAlign: 'center',
   },
   note: {
     fontSize: 13,
-    color: '#ccc',
+    color: colors.descriptionTextColor,
     textAlign: 'center',
     marginBottom: 25,
+    fontFamily: Fonts.Regularr,
   },
   dotWrapper: {
     flexDirection: 'row',
+    justifyContent: 'center',
     marginBottom: 25,
   },
-dotWrapper: {
-  flexDirection: 'row',
-  justifyContent: 'center',
-  marginBottom: 25,
-},
-dot: {
-  width: 4,
-  height: 4,
-  borderRadius: 3,
-  backgroundColor: '#888',
-  marginHorizontal: 4,
-},
-activeDot: {
-  width: 11,
-  height: 4,
-  borderRadius: 2,
-  backgroundColor: '#fff',
-},
+  dot: {
+    width: 4,
+    height: 4,
+    borderRadius: 3,
+    backgroundColor: '#888',
+    marginHorizontal: 4,
+  },
+  activeDot: {
+    width: 11,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: '#fff',
+  },
   ctaButton: {
-    backgroundColor: '#1679F8',
-    paddingHorizontal: 40,
+    backgroundColor: colors.appButton,
+    paddingHorizontal: 100,
     paddingVertical: 12,
     borderRadius: 6,
     marginBottom: 15,
   },
   ctaText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color: colors.textColorWhite,
+    fontFamily: Fonts.Boldd,
     fontSize: 16,
   },
   skipBtn: {
-    color: '#1679F8',
+    color: colors.textColorBlue,
     fontSize: 15,
-    fontWeight: '600',
+    fontFamily: Fonts.Mediumm,
   },
 });

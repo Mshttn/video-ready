@@ -15,8 +15,10 @@ import {
   XMarkIcon,
   MagnifyingGlassIcon,
   BellIcon,
-  UserCircleIcon,
+ 
 } from 'react-native-heroicons/outline';
+import { colors } from '../../constants/Colors';
+import { Fonts } from '../../constants/fonts';
 
 const { width } = Dimensions.get('window');
 
@@ -28,9 +30,11 @@ const MyProfile = ({ navigation }) => {
     dispatch(removeGenre(title));
   };
 
+  const activeProfileIndex = 0; 
+
   return (
     <View style={styles.container}>
-      {/* Header row with logo + icons */}
+
       <View style={styles.headerRow}>
         <Image source={require('../../../assets/logo.png')} style={styles.logo} />
         <View style={styles.iconGroup}>
@@ -47,7 +51,7 @@ const MyProfile = ({ navigation }) => {
         </View>
       </View>
 
-      {/* Back + Title */}
+   
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Text style={styles.backArrow}>{'←'}</Text>
@@ -55,15 +59,31 @@ const MyProfile = ({ navigation }) => {
         <Text style={styles.headerTitle}>My Profiles</Text>
       </View>
 
-      {/* Profiles */}
+   
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.profileRow}
       >
         {profiles.map((profile, index) => (
-          <View key={index} style={styles.profileItem}>
-            <Image source={profile.image} style={styles.profileImage} />
+          <View
+            key={index}
+            style={[
+              styles.profileItem,
+              index === activeProfileIndex && styles.activeProfileItem
+            ]}
+          >
+            <Image
+              source={
+                typeof profile.image === 'string'
+                  ? { uri: profile.image }
+                  : profile.image
+              }
+              style={[
+                styles.profileImage,
+                index === activeProfileIndex && styles.activeProfileImage
+              ]}
+            />
             <Text style={styles.profileName}>{profile.name}</Text>
           </View>
         ))}
@@ -81,7 +101,7 @@ const MyProfile = ({ navigation }) => {
         )}
       </ScrollView>
 
-      {/* Edit button */}
+   
       <TouchableOpacity
         onPress={() => navigation.navigate('EditProfile')}
         style={styles.editBtn}
@@ -89,7 +109,7 @@ const MyProfile = ({ navigation }) => {
         <Text style={styles.editBtnText}>Edit Profile</Text>
       </TouchableOpacity>
 
-      {/* Favorite Genres */}
+   
       <Text style={styles.sectionTitle}>Favourite Genres</Text>
       <FlatList
         data={[
@@ -98,7 +118,7 @@ const MyProfile = ({ navigation }) => {
         ]}
         keyExtractor={(item, index) => index.toString()}
         numColumns={3}
-        columnWrapperStyle={styles.columnWrapper}
+        columnWrapperStyle={{ justifyContent: 'flex-start', marginBottom: 16,gap:4 }}
         contentContainerStyle={styles.genreList}
         renderItem={({ item }) => {
           if (item.isAddButton) {
@@ -134,7 +154,7 @@ export default MyProfile;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0A0F1C',
+    backgroundColor: colors.appBackground,
     paddingTop: 50,
     paddingHorizontal: 16,
   },
@@ -162,14 +182,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   backArrow: {
-    color: '#fff',
+    color: colors.textColorWhite,
     fontSize: 26,
     marginRight: 120,
   },
   headerTitle: {
-    color: '#fff',
+    color: colors.textColorWhite,
     fontSize: 20,
-    fontWeight: '600',
+    fontFamily: Fonts.Boldd,
   },
   profileRow: {
     flexDirection: 'row',
@@ -180,15 +200,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 16,
   },
+  activeProfileItem: {
+    borderColor: colors.appButton,
+    
+   
+    padding: 2,
+  },
   profileImage: {
     width: 60,
     height: 60,
     borderRadius: 30,
   },
+  activeProfileImage: {
+    borderColor: colors.appButton,
+    borderWidth: 2,
+  },
   profileName: {
-    color: '#fff',
+    color: colors.textColorWhite,
     fontSize: 14,
     marginTop: 4,
+    fontFamily: Fonts.Mediumm,
   },
   addNew: {
     alignItems: 'center',
@@ -197,34 +228,36 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#222A35',
+    backgroundColor: colors.tabBarColor,
     justifyContent: 'center',
     alignItems: 'center',
   },
   addPlus: {
     fontSize: 28,
-    color: '#1679F8',
+    color: colors.appButton,
+    fontFamily: Fonts.Boldd,
   },
   addText: {
-    color: '#1679F8',
+    color: colors.textColorBlue,
     marginTop: 4,
+    fontFamily: Fonts.Mediumm,
   },
   editBtn: {
-    backgroundColor: '#1679F8',
+    backgroundColor: colors.appButton,
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
     marginBottom: 20,
   },
   editBtnText: {
-    color: '#fff',
+    color: colors.textColorWhite,
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: Fonts.Boldd,
   },
   sectionTitle: {
-    color: '#fff',
+    color: colors.textColorWhite,
     fontSize: 18,
-    fontWeight: '600',
+    fontFamily: Fonts.Boldd,
     marginBottom: 12,
   },
   columnWrapper: {
@@ -235,21 +268,24 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
   genreCard: {
-    width: width / 3.3,
-    backgroundColor: '#161B22',
-    borderRadius: 8,
+    width: 108,
+    height:132,
+    backgroundColor: colors.tabBarColor,
+    borderRadius: 2,
     overflow: 'hidden',
     position: 'relative',
+    marginRight:9
   },
   genreImage: {
     width: '100%',
     height: 100,
   },
   genreName: {
-    color: '#fff',
+    color: colors.textColorWhite,
     textAlign: 'center',
+    fontFamily: Fonts.Mediumm,
     paddingVertical: 4,
-    backgroundColor: '#161B22',
+    backgroundColor: colors.tabBarColor,
   },
   removeIcon: {
     position: 'absolute',
@@ -261,22 +297,23 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   profileIcon: {
-  width: 28,
-  height: 28,
-  borderRadius: 14,
-  borderWidth: 1,
-  borderColor: '#fff',
-},
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: colors.textColorWhite,
+  },
   addGenreCard: {
     width: width / 3.3,
     height: 130,
-    backgroundColor: '#161B22',
+    backgroundColor: colors.tabBarColor,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 8,
   },
   plusIcon: {
     fontSize: 30,
-    color: '#1679F8',
+    color: colors.appButton,
+    fontFamily: Fonts.Boldd,
   },
 });

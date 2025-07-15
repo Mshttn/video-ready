@@ -10,7 +10,8 @@ import {
   Dimensions,
   Alert,
 } from 'react-native';
-
+import { colors } from '../../constants/Colors';
+import { Fonts } from '../../constants/fonts';
 import { getAuth, signInWithPhoneNumber } from '@react-native-firebase/auth';
 import { firebase } from '@react-native-firebase/auth';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,18 +21,15 @@ const { width } = Dimensions.get('window');
 const Signupin = () => {
   const navigation = useNavigation();
   const [activeTab, setActiveTab] = useState('signIn');
-
   const [emaill, setEmail] = useState('');
   const [passwordd, setPassword] = useState('');
-
   const [phone, setPhone] = useState('');
   const [code, setCode] = useState('');
   const [confirmResult, setConfirmResult] = useState(null);
- 
-const { email, password } = useSelector((state) => state.user);
 
+  const { email, password } = useSelector((state) => state.user);
   const auth = getAuth();
-  firebase.auth().settings.appVerificationDisabledForTesting = true; // for emulator only
+  firebase.auth().settings.appVerificationDisabledForTesting = true;
 
   const sendOtp = async () => {
     if (!phone) return Alert.alert('Validation', 'Please enter phone number');
@@ -53,29 +51,28 @@ const { email, password } = useSelector((state) => state.user);
       Alert.alert('Invalid Code', error.message);
     }
   };
-  const handleSignIn = () => {
-  if (!emaill || !passwordd) {
-    Alert.alert('Error', 'Please enter both email and password');
-    return;
-  }
 
-  if (emaill === email && passwordd === password) {
-    Alert.alert('Success', 'Logged in successfully');
-    navigation.replace('EditProfile'); // Or wherever you want to go
-  } else {
-    Alert.alert('Error', 'Invalid email or password');
-  }
-};
+  const handleSignIn = () => {
+    if (!emaill || !passwordd) {
+      Alert.alert('Error', 'Please enter both email and password');
+      return;
+    }
+
+    if (emaill === email && passwordd === password) {
+      Alert.alert('Success', 'Logged in successfully');
+      navigation.replace('EditProfile');
+    } else {
+      Alert.alert('Error', 'Invalid email or password');
+    }
+  };
 
   return (
     <View style={styles.container}>
-      {/* Logo */}
       <Image
         source={require('../../../assets/vrr/vr_logo.png')}
         style={styles.logo}
       />
 
-      {/* Tabs */}
       <View style={styles.tabContainer}>
         <TouchableOpacity onPress={() => setActiveTab('signIn')}>
           <Text
@@ -102,38 +99,42 @@ const { email, password } = useSelector((state) => state.user);
         </TouchableOpacity>
       </View>
 
-      {/* Sign In UI */}
+   
       {activeTab === 'signIn' ? (
         <>
-          <TextInput
-            placeholder="Email / Mobile Number"
-            placeholderTextColor="#777"
-            style={styles.input}
-            value={emaill}
-            onChangeText={setEmail}
-          />
-
-          <TextInput
-            placeholder="Password"
-            placeholderTextColor="#777"
-            secureTextEntry
-            style={styles.input}
-            value={passwordd}
-            onChangeText={setPassword}
-          />
+          <View style={{ width: '100%' }}>
+            <Text style={styles.label}>Email / Mobile Number</Text>
+            <TextInput
+              placeholder="Email / Mobile Number"
+              placeholderTextColor={colors.placeholderTextColor}
+              style={styles.input}
+              value={emaill}
+              onChangeText={setEmail}
+            />
+          </View>
+          <View style={{ width: '100%' }}>
+            <Text style={styles.label}>Password</Text>
+            <TextInput
+              placeholder="Password"
+              placeholderTextColor={colors.placeholderTextColor}
+              secureTextEntry
+              style={styles.input}
+              value={passwordd}
+              onChangeText={setPassword}
+            />
+          </View>
 
           <TouchableOpacity
-  activeOpacity={0.8}
-  style={[
-    styles.signInButton,
-    !(emaill && passwordd) && styles.disabledButton,
-  ]}
-  disabled={!(emaill && passwordd)}
-  onPress={handleSignIn}
->
-  <Text style={styles.signInText}>Sign In</Text>
-</TouchableOpacity>
-
+            activeOpacity={0.8}
+            style={[
+              styles.signInButton,
+              !(emaill && passwordd) && styles.disabledButton,
+            ]}
+            disabled={!(emaill && passwordd)}
+            onPress={handleSignIn}
+          >
+            <Text style={styles.signInText}>Sign In</Text>
+          </TouchableOpacity>
 
           <TouchableOpacity>
             <Text style={styles.forgotText}>Forgot Password</Text>
@@ -141,18 +142,19 @@ const { email, password } = useSelector((state) => state.user);
         </>
       ) : (
         <>
-          {/* Sign Up UI with OTP */}
           {!confirmResult ? (
             <>
-              <TextInput
-                placeholder="Phone Number (e.g. +91xxxxxxxxxx)"
-                placeholderTextColor="#777"
-                style={styles.input}
-                keyboardType="phone-pad"
-                value={phone}
-                onChangeText={setPhone}
-              />
-
+              <View style={{ width: '100%' }}>
+                <Text style={styles.label}>Phone Number</Text>
+                <TextInput
+                  placeholder="Phone Number (e.g. +91xxxxxxxxxx)"
+                  placeholderTextColor={colors.placeholderTextColor}
+                  style={styles.input}
+                  keyboardType="phone-pad"
+                  value={phone}
+                  onChangeText={setPhone}
+                />
+              </View>
               <TouchableOpacity
                 activeOpacity={0.8}
                 onPress={sendOtp}
@@ -169,13 +171,12 @@ const { email, password } = useSelector((state) => state.user);
             <>
               <TextInput
                 placeholder="Enter OTP"
-                placeholderTextColor="#777"
+                placeholderTextColor={colors.placeholderTextColor}
                 style={styles.input}
                 keyboardType="number-pad"
                 value={code}
                 onChangeText={setCode}
               />
-
               <TouchableOpacity
                 activeOpacity={0.8}
                 onPress={verifyCode}
@@ -200,7 +201,7 @@ export default Signupin;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#061124',
+    backgroundColor: colors.appBackground,
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingTop: 80,
@@ -220,15 +221,16 @@ const styles = StyleSheet.create({
   },
   tabText: {
     fontSize: 18,
-    fontWeight: '600',
-    color: '#667',
+    fontFamily: Fonts.Mediumm,
+    color: colors.labelColor,
   },
   activeTabText: {
-    color: '#fff',
+    color: colors.textColorWhite,
+    fontFamily: Fonts.Boldd,
   },
   activeUnderline: {
     height: 2,
-    backgroundColor: '#1679F8',
+    backgroundColor: colors.appButton,
     marginTop: 4,
     width: 50,
     alignSelf: 'center',
@@ -236,32 +238,42 @@ const styles = StyleSheet.create({
   input: {
     width: '100%',
     height: 50,
-    backgroundColor: '#121F35',
+    backgroundColor: colors.inputBackground,
     borderRadius: 6,
     paddingHorizontal: 15,
-    color: '#fff',
+    color: colors.textColorWhite,
     marginBottom: 20,
+    fontFamily: Fonts.Regularr,
   },
   signInButton: {
     width: '100%',
     height: 50,
-    backgroundColor: '#1C396A',
+    backgroundColor: colors.appButton,
     borderRadius: 6,
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 10,
   },
   disabledButton: {
-    opacity: 0.5,
+    backgroundColor: colors.appButtonDisabled,
   },
   signInText: {
-    color: '#fff',
+    color: colors.textColorWhite,
     fontWeight: 'bold',
     fontSize: 16,
+    fontFamily: Fonts.Boldd,
   },
   forgotText: {
-    color: '#1679F8',
+    color: colors.textColorBlue,
     fontSize: 16,
     marginTop: 10,
+    fontFamily: Fonts.Mediumm,
+  },
+  label: {
+    color: colors.labelColor,
+    fontFamily: Fonts.Mediumm,
+    fontSize: 14,
+    marginBottom: 4,
+    marginLeft: 2,
   },
 });

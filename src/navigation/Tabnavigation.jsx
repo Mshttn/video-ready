@@ -6,6 +6,7 @@ import Menu from '../screens/Dashboard/Menu';
 import LiveTv from '../screens/Dashboard/LiveTv';
 import Moviess from '../screens/Dashboard/Moviess';
 import MainScreen from '../screens/Dashboard/MainScreen';
+import { colors } from '../constants/Colors';
 
 const BottomTabs=createBottomTabNavigator();
 
@@ -18,7 +19,7 @@ screenOptions={{
     headerShown: false,
 
     tabBarStyle: {
-      backgroundColor: '#001D39', // 💡 Set your desired background color here
+      backgroundColor: colors.tabBarColor,
       height: 65,
       borderTopWidth: 0, // Optional: remove top border
       elevation: 0, // Android shadow
@@ -34,7 +35,7 @@ screenOptions={{
               style={{
                 width: 25,
                 height: 25,
-                tintColor: focused ? '#2680EB' : '#fff',
+                tintColor: focused ? colors.tabBarActiveTintColor : colors.tabBarInactiveTintColor,
               }}
               resizeMode="contain"
               />
@@ -50,7 +51,7 @@ screenOptions={{
               style={{
                 width: 25,
                 height: 25,
-                tintColor: focused ? '#2680EB' : '#fff',
+                tintColor: focused ? colors.tabBarActiveTintColor : colors.tabBarInactiveTintColor,
               }}
               resizeMode="contain"
               />
@@ -66,7 +67,7 @@ screenOptions={{
               style={{
                 width: 25,
                 height: 25,
-                tintColor: focused ? '#2680EB' : '#fff',
+                tintColor: focused ? colors.tabBarActiveTintColor : colors.tabBarInactiveTintColor,
               }}
               resizeMode="contain"
               />
@@ -82,7 +83,7 @@ screenOptions={{
               style={{
                 width: 25,
                 height: 25,
-                tintColor: focused ? '#2680EB' : '#fff',
+                tintColor: focused ? colors.tabBarActiveTintColor : colors.tabBarInactiveTintColor,
               }}
               resizeMode="contain"
               />
@@ -98,7 +99,7 @@ screenOptions={{
               style={{
                 width: 25,
                 height: 25,
-                tintColor: focused ? '#2680EB' : '#fff',
+                tintColor: focused ? colors.tabBarActiveTintColor : colors.tabBarInactiveTintColor,
               }}
               resizeMode="contain"
               />

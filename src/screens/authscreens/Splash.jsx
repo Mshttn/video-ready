@@ -1,17 +1,36 @@
-import { Button, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { useNavigation } from '@react-navigation/native'
+import { StyleSheet, View, Image } from 'react-native';
+import React, { useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 const Splash = () => {
-    const navigation=useNavigation()
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigation.replace('Crousl');
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [navigation]);
+
   return (
-    <View style={{flex:1, justifyContent:'center',}}>
-        <Button title='pres' onPress={()=>navigation.navigate('Crousl')}/>
-      <Text>Splash</Text>
+    <View style={styles.container}>
+      <Image source={require('../../../assets/spls.png')} style={styles.splashImage} />
     </View>
-  )
-}
+  );
+};
 
-export default Splash
+export default Splash;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#000',
+  },
+  splashImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+});

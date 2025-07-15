@@ -13,6 +13,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { setUserName, setUserImage, setAgeGroup,setUserProfiles } from '../../redux/Slices/userSlices';
 import { ArrowLeftIcon, PencilIcon, TrashIcon } from 'react-native-heroicons/outline';
+import { colors } from '../../constants/Colors';
+import { Fonts } from '../../constants/fonts';
 
 
 const { width } = Dimensions.get('window');
@@ -53,7 +55,7 @@ const UserEdit = ({ navigation }) => {
   dispatch(setUserImage(localImage || defaultImage));
   dispatch(setAgeGroup(localAgeGroup));
 
-  // Update profile list by adding this profile to Redux
+ 
  dispatch(setUserProfiles([ newProfile,...profiles]));
 
   Alert.alert('Success', 'Profile updated');
@@ -137,7 +139,7 @@ export default UserEdit;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#061124',
+    backgroundColor: colors.appBackground,
     paddingHorizontal: 20,
     paddingTop: 50,
   },
@@ -149,8 +151,8 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 20,
-    fontWeight: '600',
-    color: '#fff',
+    fontFamily: Fonts.Boldd,
+    color: colors.textColorWhite,
   },
   avatarContainer: {
     alignItems: 'center',
@@ -165,21 +167,22 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     right: width / 2 - 90 / 2 - 12,
-    backgroundColor: '#fff',
+    backgroundColor: colors.textColorWhite,
     borderRadius: 16,
     padding: 6,
   },
   label: {
-    color: '#ccc',
+    color: colors.labelColor,
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: Fonts.Mediumm,
     marginBottom: 8,
   },
   input: {
-    backgroundColor: '#121F35',
+    backgroundColor: colors.inputBackground,
     borderRadius: 6,
     padding: 12,
-    color: '#fff',
+    color: colors.textColorWhite,
+    fontFamily: Fonts.Regularr,
   },
   ageContainer: {
     flexDirection: 'row',
@@ -190,14 +193,14 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     paddingHorizontal: 14,
     borderRadius: 20,
-    borderColor: '#444',
+    borderColor: colors.descriptionTextColor,
     borderWidth: 1,
     marginRight: 8,
     marginBottom: 8,
   },
   ageSelected: {
-    backgroundColor: '#1679F8',
-    borderColor: '#1679F8',
+    backgroundColor: colors.appButton,
+    borderColor: colors.appButton,
   },
   deleteRow: {
     flexDirection: 'row',
@@ -206,14 +209,14 @@ const styles = StyleSheet.create({
     marginVertical: 30,
   },
   saveBtn: {
-    backgroundColor: '#1679F8',
+    backgroundColor: colors.appButton,
     paddingVertical: 14,
     borderRadius: 8,
     alignItems: 'center',
   },
   saveText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color: colors.textColorWhite,
+    fontFamily: Fonts.Boldd,
     fontSize: 16,
   },
 });

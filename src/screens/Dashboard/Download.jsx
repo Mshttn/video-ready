@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 import { EllipsisVerticalIcon } from 'react-native-heroicons/outline';
 import { ArrowLeftIcon } from 'react-native-heroicons/solid';
+import { colors } from '../../constants/Colors';
+import { Fonts } from '../../constants/fonts';
 
 const downloadedVideos = [
   {
@@ -126,7 +128,7 @@ const Download = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#061124',
+    backgroundColor: colors.appBackground,
     paddingHorizontal: 16,
     paddingTop: 60,
   },
@@ -147,14 +149,14 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 22,
-    fontWeight: '700',
-    color: '#fff',
+    fontFamily: Fonts.Boldd,
+    color: colors.textColorWhite,
   },
   card: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 18,
-    borderBottomColor: '#222',
+    borderBottomColor: colors.tabBarColor,
     borderBottomWidth: 1,
     paddingBottom: 14,
   },
@@ -168,14 +170,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    color: '#fff',
+    color: colors.textColorWhite,
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: Fonts.Boldd,
   },
   genres: {
-    color: '#aaa',
+    color: colors.descriptionTextColor,
     fontSize: 13,
     marginTop: 4,
+    fontFamily: Fonts.Mediumm,
   },
   modalBackground: {
     flex: 1,
@@ -183,7 +186,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#00000099',
   },
   bottomSheet: {
-    backgroundColor: '#0B1C34',
+    backgroundColor: colors.tabBarColor,
     paddingVertical: 20,
     paddingHorizontal: 20,
     borderTopLeftRadius: 16,
@@ -193,30 +196,31 @@ const styles = StyleSheet.create({
     width: 40,
     height: 4,
     borderRadius: 8,
-    backgroundColor: '#666',
+    backgroundColor: colors.labelColor,
     alignSelf: 'center',
     marginBottom: 16,
   },
   sheetButton: {
     paddingVertical: 14,
-    borderBottomColor: '#333',
+    borderBottomColor: colors.inputBackground,
     borderBottomWidth: 1,
   },
   sheetButtonText: {
-    color: '#fff',
+    color: colors.textColorWhite,
     fontSize: 16,
+    fontFamily: Fonts.Mediumm,
   },
   closeButton: {
     marginTop: 60,
-    backgroundColor: '#2e6ef7',
+    backgroundColor: colors.appButton,
     paddingVertical: 14,
     borderRadius: 8,
     alignItems: 'center',
   },
   closeButtonText: {
-    color: '#fff',
+    color: colors.textColorWhite,
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: Fonts.Boldd,
   },
 });
 

@@ -68,9 +68,9 @@ const handleSignOut = () => {
     {
       text: 'Sign Out',
      onPress: () => {
-  // dispatch(clearUser());
+  dispatch(clearUser());
 
-navigation.navigate('Stacknavigation', {
+navigation.replace('Stacknavigation', {
   screen: 'Signupin',
 });
 }
@@ -119,7 +119,7 @@ navigation.navigate('Stacknavigation', {
       <DrawerItem image={require('../../assets/Sidebar/my_playlist.png')} label="My Playlist" />
       <DrawerItem image={require('../../assets/Sidebar/watch_history_icon.png')} label="Watch History" />
      <DrawerItem
-  image={require('../../assets/home.png')}
+  image={require('../../assets/Sidebar/watch_history_icon-1.png')}
   label="Downloaded Videos"
   onPress={() =>
     navigation.navigate('MovieStack', {

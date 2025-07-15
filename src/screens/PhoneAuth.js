@@ -4,6 +4,8 @@ import { getAuth, signInWithPhoneNumber } from '@react-native-firebase/auth';
 import { firebase } from '@react-native-firebase/auth';
 import {PhoneIcon} from "react-native-heroicons/solid"
 import { useNavigation } from '@react-navigation/native';
+import { colors } from '../constants/Colors';
+import { Fonts } from '../constants/fonts';
 
 const PhoneAuth = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -79,26 +81,27 @@ export default PhoneAuth;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f4f6f8',
+    backgroundColor: colors.appBackground,
     justifyContent: 'center',
     paddingHorizontal: 24,
   },
   heading: {
     fontSize: 22,
-    fontWeight: '600',
+    fontFamily: Fonts.Boldd,
     marginBottom: 24,
     textAlign: 'center',
-    color: '#333',
+    color: colors.textColorWhite,
   },
   input: {
     height: 48,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: colors.labelColor,
     borderRadius: 8,
     paddingHorizontal: 16,
-    backgroundColor: '#fff',
+    backgroundColor: colors.inputBackground,
     marginBottom: 16,
-    color: '#000',
+    color: colors.textColorWhite,
+    fontFamily: Fonts.Regularr,
   },
   button: {
     marginTop: 8,
