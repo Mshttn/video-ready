@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { setUserName, setUserImage, setAgeGroup,setUserProfiles } from '../../redux/Slices/userSlices';
+import { setUserName, setUserImage, setAgeGroup,setUserProfiles , setSelectedProfile} from '../../redux/Slices/userSlices';
 import { ArrowLeftIcon, PencilIcon, TrashIcon } from 'react-native-heroicons/outline';
 import { colors } from '../../constants/Colors';
 import { Fonts } from '../../constants/fonts';
@@ -40,7 +40,7 @@ const MyprofileEdit = ({ navigation }) => {
     });
   };
 
- const handleSave = () => {
+const handleSave = () => {
   if (!localName.trim()) {
     Alert.alert('Validation', 'Please enter a name');
     return;
@@ -51,13 +51,23 @@ const MyprofileEdit = ({ navigation }) => {
     image: localImage || defaultImage,
   };
 
+  
+  const updatedProfiles = profiles.map((profile) => {
+    if (
+      profile.name === name &&
+      profile.image === profileImage
+    ) {
+      return newProfile; 
+    }
+    return profile;
+  });
+
+
   dispatch(setUserName(localName));
   dispatch(setUserImage(localImage || defaultImage));
   dispatch(setAgeGroup(localAgeGroup));
-
- 
- dispatch(setUserProfiles([ newProfile,...profiles]));
-
+  dispatch(setUserProfiles(updatedProfiles));
+  dispatch(setSelectedProfile(newProfile)); 
   Alert.alert('Success', 'Profile updated');
   navigation.goBack();
 };

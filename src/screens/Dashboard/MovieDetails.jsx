@@ -14,8 +14,8 @@ const MovieDetails = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const dispatch=useDispatch();
-    const [isDownloading, setIsDownloading] = useState(false);
-  const [isDownloaded, setIsDownloaded] = useState(false);
+   
+  const [downloadStatus, setDownloadStatus] = useState('idle');
 
   const { id = '0', name = 'Unknown Movie', image = require('../../../assets/series/panchayat.png') } = route.params || {};
 
@@ -69,30 +69,43 @@ const MovieDetails = () => {
           </TouchableOpacity>
     <TouchableOpacity
   style={styles.iconTextButton}
-  onPress={() => {
-    setIsDownloading(true);
+ onPress={() => {
+  if (downloadStatus === 'idle') {
+    setDownloadStatus('downloading');
+
     setTimeout(() => {
-      setIsDownloading(false);
-      dispatch(addDownload({
-        id: id || Date.now().toString(), 
-        title: name,
-        genres: 'Action, Thriller, Suspense',
-        thumbnail: image,
-      }));
+      dispatch(
+        addDownload({
+          id: id || Date.now().toString(),
+          title: name,
+          genres: 'Action, Thriller, Suspense',
+          thumbnail: image,
+        })
+      );
+      setDownloadStatus('done');
     }, 5000);
-  }}
+  }
+}}
+
 >
-  <Image
-    source={
-      isDownloading
-        ? require('../../../assets/Downloading/downloading.png')
-        :require('../../../assets/Sidebar/watch_history_icon-1.png')  
-    }
-    style={styles.icon}
-  />
-  <Text style={styles.iconLabel}>
-    {isDownloading ? 'Downloading...' : 'Downloaded'}
-  </Text>
+ <Image
+  source={
+    downloadStatus === 'downloading'
+      ? require('../../../assets/Downloading/downloading.png')
+      : downloadStatus === 'done'
+      ? require('../../../assets/Sidebar/watch_history_icon-1.png')
+      : require('../../../assets/download.png') 
+  }
+  style={styles.icon}
+/>
+<Text style={styles.iconLabel}>
+  {downloadStatus === 'downloading'
+    ? 'Downloading...'
+    : downloadStatus === 'done'
+    ? 'Downloaded'
+    : 'Download'}
+</Text>
+
 </TouchableOpacity>
         </View>
       </View>

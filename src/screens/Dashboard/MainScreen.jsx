@@ -48,7 +48,38 @@ const flashChannelData = [
     image: require('../../../assets/series/panchayat.png'), 
   },
 ];
-
+const StayhomeData = [
+  {
+    id: '1',
+    name: 'Squid Game',
+    image: require('../../../assets/series/squiddd.png'),
+  },
+  {
+    id: '2',
+    name: 'Kabir Singh',
+    image: require('../../../assets/newseries/kabirnew.png'),
+  },
+  {
+    id: '3',
+    name: 'Money Heist',
+    image: require('../../../assets/newseries/moneynew.png'),
+  },
+  {
+    id: '4',
+    name: 'Panchayat',
+    image: require('../../../assets/newseries/panchayatnew.png'),
+  },
+  {
+    id: '5',
+    name: 'Breaking Bad',
+    image: require('../../../assets/newseries/panchayatnew.png'),
+  },
+  {
+    id: '6',
+    name: 'Dark',
+    image: require('../../../assets/newseries/panchayatnew.png'), 
+  },
+];
 
 
 
@@ -172,7 +203,7 @@ const MainScreen = () => {
             </TouchableOpacity>
           </View>
             <FlatList
-  data={flashChannelData}
+  data={StayhomeData}
   horizontal
   showsHorizontalScrollIndicator={false}
   keyExtractor={(item) => item.id}
